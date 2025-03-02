@@ -1,6 +1,6 @@
 using System;
 
-using DesafioTjRjErlimar.Application.Model;
+using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

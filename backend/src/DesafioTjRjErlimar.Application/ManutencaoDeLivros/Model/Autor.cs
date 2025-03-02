@@ -1,4 +1,4 @@
-namespace DesafioTjRjErlimar.Application.Model;
+namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
 public class Autor
 {
