@@ -1,6 +1,7 @@
 # Desafio TJRJ - Erlimar Silva Campos - 2025
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/erlimar/desafio-tjrj-erlimar-2025/ci.yaml?branch=main&style=for-the-badge&logo=github&label=CI%20-%20BackEnd)
+![GitHub Actions Workflow Status for BackEnd](https://img.shields.io/github/actions/workflow/status/erlimar/desafio-tjrj-erlimar-2025/ci-backend.yml?branch=main&style=for-the-badge&logo=github&label=CI%20-%20BackEnd)
+![GitHub Actions Workflow Status for FrontEnd](https://img.shields.io/github/actions/workflow/status/erlimar/desafio-tjrj-erlimar-2025/ci-frontend.yml?branch=main&style=for-the-badge&logo=github&label=CI%20-%20FrontEnd)
 
 Este repositório contém os artefatos de desenvolvimento para desafio proposto por TJRJ 
 cujo objetivo é criar um projeto utilizando as boas práticas de mercado e apresentar o
