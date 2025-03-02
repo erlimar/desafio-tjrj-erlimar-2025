@@ -42,19 +42,19 @@ subdiretórios.
 
 1. Inicializa o setup dos requisitos de desenvolvimento
 ```powershell
+# Essa operação irá gerar o arquivo com variáveis de ambiente e scripts de criação
+# do banco de dados, e só precisa ser feita uma única vez
 .\setup.ps1
-# Essa operação irá gerar o arquivo com variáveis de ambiente
-# e só precisa ser feita uma única vez
 ```
 
 2. Levante os serviços de dependências de desenvolvimento
 ```powershell
-.\up.ps1
 # Isso deve levantar uma instância do MS SQL Server Express na porta 11433
 # A senha para o usuário "sa" estará disponível no arquivo infra/dev.env
 # e com ela você poderá acessar a base em sua ferramenta preferida
+.\up.ps1
 
-# Caso queira acompanhar o status dos serviços
+# Caso queira acompanhar o status dos serviços do Docker
 .\stats.ps1
 # Um [Ctrl + C] encerra
 
@@ -68,6 +68,11 @@ subdiretórios.
 - Uma vez conectado crie a base de dados da aplicação executando o arquivo `infra/db_scripts/create_database.sql`
 - No próprio arquivo `infra/db_scripts/create_database.sql` você encontra o nome da base, usuário e senha para usar na _WebApi_
 - Agora você pode usar apenas a conexão com o novo usuário exclusivo da aplicação
+
+4. Restaure as dependências de pacotes dos projetos
+```powershell
+.\restore.ps1
+```
 
 <!-- links -->
 [ANGULAR]: https://angular.io
