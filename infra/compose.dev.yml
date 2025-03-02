@@ -4,4 +4,8 @@ services:
     env_file: "./dev.env"
     ports:
       - "11433:1433"
+    volumes:
+      - ./db_data:/var/opt/mssql/data
+    restart: always
+    
 

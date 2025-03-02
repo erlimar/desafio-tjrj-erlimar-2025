@@ -62,6 +62,13 @@ subdiretórios.
 .\down.ps1
 ```
 
+3. Conecte-se ao servidor de banco e crie a base da aplicação
+
+- Você encontrará a senha do usuário `sa` no arquivo `infra/dev.env`
+- Uma vez conectado crie a base de dados da aplicação executando o arquivo `infra/db_scripts/create_database.sql`
+- No próprio arquivo `infra/db_scripts/create_database.sql` você encontra o nome da base, usuário e senha para usar na _WebApi_
+- Agora você pode usar apenas a conexão com o novo usuário exclusivo da aplicação
+
 <!-- links -->
 [ANGULAR]: https://angular.io
 [ASPNETCORE]: https://asp.net

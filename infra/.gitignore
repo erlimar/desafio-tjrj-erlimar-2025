@@ -1,1 +1,3 @@
+db_data/
+db_scripts/create_database.sql
 *.env
