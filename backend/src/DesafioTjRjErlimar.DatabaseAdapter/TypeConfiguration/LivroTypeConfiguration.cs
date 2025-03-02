@@ -26,17 +26,17 @@ public class LivroTypeConfiguration : IEntityTypeConfiguration<Livro>
             .WithMany(r => r.Livros)
             .UsingEntity(
                 "Livro_Assunto", 
-                left => left.HasOne(typeof(Assunto)).WithMany().HasForeignKey("Assunto_CodAssunto").HasPrincipalKey(nameof(Assunto.AssuntoId)),
-                right => right.HasOne(typeof(Livro)).WithMany().HasForeignKey("Livro_CodLivro").HasPrincipalKey(nameof(Livro.LivroId)),
+                right => right.HasOne(typeof(Assunto)).WithMany().HasForeignKey("Assunto_CodAssunto").HasPrincipalKey(nameof(Assunto.AssuntoId)),
+                left => left.HasOne(typeof(Livro)).WithMany().HasForeignKey("Livro_CodLivro").HasPrincipalKey(nameof(Livro.LivroId)),
                 fk => fk.HasKey("Assunto_CodAssunto", "Livro_CodLivro"));
 
         builder
             .HasMany(r => r.Autores)
             .WithMany(r => r.Livros)
             .UsingEntity(
-                "Livro_Autor", 
-                left => left.HasOne(typeof(Autor)).WithMany().HasForeignKey("Autor_CodAutor").HasPrincipalKey(nameof(Autor.AutorId)),
-                right => right.HasOne(typeof(Livro)).WithMany().HasForeignKey("Livro_CodLivro").HasPrincipalKey(nameof(Livro.LivroId)),
+                "Livro_Autor",
+                right => right.HasOne(typeof(Autor)).WithMany().HasForeignKey("Autor_CodAutor").HasPrincipalKey(nameof(Autor.AutorId)),
+                left => left.HasOne(typeof(Livro)).WithMany().HasForeignKey("Livro_CodLivro").HasPrincipalKey(nameof(Livro.LivroId)),
                 fk => fk.HasKey("Autor_CodAutor", "Livro_CodLivro"));
     }
 }

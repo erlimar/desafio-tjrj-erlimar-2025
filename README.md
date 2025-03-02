@@ -69,10 +69,19 @@ subdiretórios.
 - No próprio arquivo `infra/db_scripts/create_database.sql` você encontra o nome da base, usuário e senha para usar na _WebApi_
 - Agora você pode usar apenas a conexão com o novo usuário exclusivo da aplicação
 
-4. Restaure as dependências de pacotes dos projetos
+4. Aplique o script que cria o esquema do banco
+
+- Script disponível em `infra/db_scripts/database_apply.sql`
+
+5. Restaure as dependências de pacotes dos projetos
 ```powershell
 .\restore.ps1
 ```
+
+6. Execute a aplicação no modo desenvolvimento
+
+- No Visual Studio Code, abra o arquivo de _Workspace_ `desafio-tjrj-erlimar-2025.code-workspace`
+- Na aba "Run and Debug" escolha a opção **All-In-One (workspace)** e dê um play
 
 <!-- links -->
 [ANGULAR]: https://angular.io
