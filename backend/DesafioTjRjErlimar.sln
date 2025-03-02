@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioTjRjErlimar.Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioTjRjErlimar.DatabaseAdapter", "src\DesafioTjRjErlimar.DatabaseAdapter\DesafioTjRjErlimar.DatabaseAdapter.csproj", "{1777F510-7583-44D8-A414-A86F08FACA43}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{867D8972-742E-45BE-9A55-7D268A7E9538}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioTjRjErlimar.ApplicationTests", "test\DesafioTjRjErlimar.ApplicationTests\DesafioTjRjErlimar.ApplicationTests.csproj", "{42C28560-14F0-4535-BFDA-188E36CF78D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,15 @@ Global
 		{1777F510-7583-44D8-A414-A86F08FACA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1777F510-7583-44D8-A414-A86F08FACA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1777F510-7583-44D8-A414-A86F08FACA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C28560-14F0-4535-BFDA-188E36CF78D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C28560-14F0-4535-BFDA-188E36CF78D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C28560-14F0-4535-BFDA-188E36CF78D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C28560-14F0-4535-BFDA-188E36CF78D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{74C37E70-6A19-4966-9F92-514E726E913D} = {05AABE42-5D2A-4C76-9DB4-318501788DD2}
 		{A47BD820-918C-493F-9275-DCBDB1E07CDF} = {05AABE42-5D2A-4C76-9DB4-318501788DD2}
 		{1777F510-7583-44D8-A414-A86F08FACA43} = {05AABE42-5D2A-4C76-9DB4-318501788DD2}
+		{42C28560-14F0-4535-BFDA-188E36CF78D2} = {867D8972-742E-45BE-9A55-7D268A7E9538}
 	EndGlobalSection
 EndGlobal
