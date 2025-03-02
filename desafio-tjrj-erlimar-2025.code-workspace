@@ -39,7 +39,8 @@
 			"ms-dotnettools.csharp",
 			"inferrinizzard.prettier-sql-vscode",
 			"ms-vscode.PowerShell",
-			"ms-mssql.mssql"
+			"ms-mssql.mssql",
+			"adrianwilczynski.user-secrets"
 		]
 	}
 }
