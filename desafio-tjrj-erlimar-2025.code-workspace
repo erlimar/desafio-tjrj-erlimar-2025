@@ -1,13 +1,16 @@
 {
 	"folders": [
 		{
+			"path": ".",
+			"name": "All Files"
+		},
+		{
 			"path": "./frontend",
+			"name": "FrontEnd (Angular)"
 		},
 		{
 			"path": "./backend",
-		},
-		{
-			"path": "./infra"
+			"name": "BackEnd (ASP.NET Core)"
 		}
 	],
 	"settings": {
@@ -34,7 +37,8 @@
 			"ms-dotnettools.vscodeintellicode-csharp",
 			"ms-dotnettools.csdevkit",
 			"ms-dotnettools.csharp",
-			"inferrinizzard.prettier-sql-vscode"
+			"inferrinizzard.prettier-sql-vscode",
+			"ms-vscode.PowerShell"
 		]
 	}
 }
