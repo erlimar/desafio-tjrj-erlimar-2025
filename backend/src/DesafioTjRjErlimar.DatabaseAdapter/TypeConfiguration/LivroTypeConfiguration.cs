@@ -25,7 +25,7 @@ public class LivroTypeConfiguration : IEntityTypeConfiguration<Livro>
             .HasMany(r => r.Assuntos)
             .WithMany(r => r.Livros)
             .UsingEntity(
-                "Livro_Assunto", 
+                "Livro_Assunto",
                 right => right.HasOne(typeof(Assunto)).WithMany().HasForeignKey("Assunto_CodAssunto").HasPrincipalKey(nameof(Assunto.AssuntoId)),
                 left => left.HasOne(typeof(Livro)).WithMany().HasForeignKey("Livro_CodLivro").HasPrincipalKey(nameof(Livro.LivroId)),
                 fk => fk.HasKey("Assunto_CodAssunto", "Livro_CodLivro"));

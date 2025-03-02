@@ -8,7 +8,8 @@ public class AssuntoTest
     [Fact(DisplayName = "Assunto deve ser instanciável")]
     public void AssuntoDeveSerInstanciavel()
     {
-        var instance = new Assunto{
+        var instance = new Assunto
+        {
             Descricao = "Teste"
         };
 
