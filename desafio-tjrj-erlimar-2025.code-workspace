@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "./frontend",
+		},
+		{
+			"path": "./backend",
+		},
+		{
+			"path": "./infra"
+		}
+	],
+	"settings": {
+		"git.openRepositoryInParentFolders": "always"
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [],
+		"compounds": [
+			{
+				"name": "All-In-One",
+				"configurations": [
+					"WebApi",
+					"ng serve"
+				]
+			}
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"Angular.ng-template",
+			"ms-azuretools.vscode-docker",
+			"EditorConfig.EditorConfig",
+			"ms-dotnettools.vscodeintellicode-csharp",
+			"ms-dotnettools.csdevkit",
+			"ms-dotnettools.csharp",
+			"inferrinizzard.prettier-sql-vscode"
+		]
+	}
+}
