@@ -36,4 +36,16 @@ public class ManutencaoLivroAppService
 
         return await _repository.CadastraNovoAutorAsync(autor);
     }
+
+    /// <summary>
+    /// Lista todos os autores ordenados por nome
+    /// </summary>
+    public async Task<IEnumerable<Autor>> ObterAutoresAsync()
+    {
+        IEnumerable<Autor> autores = await _repository.ListarAutoresAsync();
+
+        var autoresOrdenados = autores.OrderBy(a => a.Nome);
+
+        return autoresOrdenados;
+    }
 }

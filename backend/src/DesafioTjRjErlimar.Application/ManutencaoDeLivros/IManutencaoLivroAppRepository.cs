@@ -1,3 +1,4 @@
+
 using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
 namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros;
@@ -24,4 +25,9 @@ public interface IManutencaoLivroAppRepository
     /// <param name="autor">Dados do autor para cadastro</param>
     /// <returns>Instância do autor cadastrado</returns>
     Task<Autor> CadastraNovoAutorAsync(Autor autor);
+
+    /// <summary>
+    /// Lista todos os autores
+    /// </summary>
+    Task<IEnumerable<Autor>> ListarAutoresAsync();
 }

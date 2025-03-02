@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DesafioTjRjErlimar.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("autores")]
 public class AutorController : ControllerBase
 {
     private readonly ILogger<AutorController> _logger;
@@ -44,5 +44,24 @@ public class AutorController : ControllerBase
             Codigo = autorCadastrado.AutorId,
             Nome = autorCadastrado.Nome
         });
+    }
+
+    /// <summary>
+    /// Lista todos os autores
+    /// </summary>
+    /// <response code="200">Lista de autores</response>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AutorViewModel>>> ListarAutores()
+    {
+        var autores = await _manutencaoLivroAppService.ObterAutoresAsync();
+
+        var autoresViewModel = autores.Select(a => new AutorViewModel
+        {
+            Codigo = a.AutorId,
+            Nome = a.Nome
+        });
+
+        return Ok(autoresViewModel);
     }
 }

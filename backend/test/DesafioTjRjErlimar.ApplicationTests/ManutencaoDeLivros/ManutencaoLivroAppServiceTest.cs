@@ -127,4 +127,30 @@ public class ManutencaoLivroAppServiceTest
         Assert.NotNull(cadastro);
         Assert.NotEqual(0, cadastro.AutorId);
     }
+
+    [Fact(DisplayName = "Lista de autores sempre está ordenada por nome")]
+    public async Task ListaDeAutoresSempreEstaOrdenadaPorNome()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ListarAutoresAsync())
+            .ReturnsAsync(new List<Autor>()
+            {
+                new Autor { AutorId = 1, Nome = "Z" },
+                new Autor { AutorId = 2, Nome = "A" },
+                new Autor { AutorId = 3, Nome = "B" }
+            });
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        var autoresOrdenados = await service.ObterAutoresAsync();
+
+        Assert.NotNull(autoresOrdenados);
+        Assert.NotEmpty(autoresOrdenados);
+        Assert.Equal(3, autoresOrdenados.Count());
+
+        Assert.Equal(2, autoresOrdenados.ElementAt(0).AutorId);
+        Assert.Equal(3, autoresOrdenados.ElementAt(1).AutorId);
+        Assert.Equal(1, autoresOrdenados.ElementAt(2).AutorId);
+    }
 }
