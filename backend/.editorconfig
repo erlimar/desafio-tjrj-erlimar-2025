@@ -4,6 +4,7 @@ root = true
 [*]
 indent_style = space
 charset = utf-8
+end_of_line = lf
 csharp_style_namespace_declarations = file_scoped:error
 dotnet_diagnostic.IDE0161.severity = error
 
@@ -19,9 +20,8 @@ indent_size = 2
 # Indentation and spacing
 indent_size = 4
 tab_width = 4
-
 # New line preferences
-end_of_line = crlf
+
 insert_final_newline = false
 
 #### .NET Coding Conventions ####
