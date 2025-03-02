@@ -1,5 +1,6 @@
-
+using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
 using DesafioTjRjErlimar.DatabaseAdapter;
+using DesafioTjRjErlimar.DatabaseAdapter.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,22 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        #region Configurações do ASP.NET
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
 
         builder.Services.AddControllers();
+        builder.Services.AddProblemDetails();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        #endregion
 
         #region Configuração de acesso ao banco
         var connectionString = builder.Configuration.GetConnectionString("DesafioTjRjErlimar")
@@ -27,11 +39,19 @@ public class Program
         });
         #endregion
 
+        #region Configurações de serviços de aplicação
+        builder.Services
+            .AddScoped<IManutencaoLivroAppRepository, ManutencaoLivroRelationalAppRepository>()
+            .AddScoped<ManutencaoLivroAppService>();
+        #endregion
+
         var app = builder.Build();
 
         app.UseSwagger();
         app.UseSwaggerUI();
         app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseCors();
         app.UseAuthorization();
         app.MapControllers();
 
