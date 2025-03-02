@@ -32,6 +32,11 @@ jobs:
           dotnet restore ./DesafioTjRjErlimar.sln
         working-directory: ./backend
 
+      - name: Lint
+        run: |
+          dotnet format ./DesafioTjRjErlimar.sln --verify-no-changes
+        working-directory: ./backend
+
       - name: Build -c Debug
         run: |
           dotnet build ./DesafioTjRjErlimar.sln --nologo -c Debug --no-restore --no-incremental -warnaserror
