@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 namespace DesafioTjRjErlimar.WebApi.Model;
 
 /// <summary>
-/// Dados para cadastro de novo autor
+/// Dados para cadastro de autor
 /// </summary>
-public class CadastrarNovoAutorViewModel : IValidatableObject
+public class DadosAutorViewModel : IValidatableObject
 {
     /// <summary>
     /// Nome do autor, com no mínimo 3 e no máximo 40 caracteres

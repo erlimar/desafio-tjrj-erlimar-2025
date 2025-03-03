@@ -22,6 +22,8 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
     /// <returns>Nova instância de <see cref="Autor"/></returns>
     public async Task<Autor> CadastraNovoAutorAsync(Autor autor)
     {
+        _ = autor ?? throw new ArgumentNullException(nameof(autor));
+
         var autorCadastrado = new Autor
         {
             AutorId = autor.AutorId,
@@ -81,6 +83,15 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
     }
 
     /// <summary>
+    /// Verifica se já existe um autor com nome informado, exceto o identificador informado
+    /// </summary>
+    /// <param name="nome">Nome do <see cref="Autor"/></param>
+    public async Task<bool> ExisteAutorComNomeExcetoIdAsync(string nome, int idExcecao)
+    {
+        return await _context.Set<Autor>().AnyAsync(a => a.Nome.Equals(nome) && a.AutorId != idExcecao);
+    }
+
+    /// <summary>
     /// Obté a lista de todos os autores cadastrados
     /// </summary>
     public async Task<IEnumerable<Autor>> ListarAutoresAsync()
@@ -97,5 +108,24 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
         await _context.Set<Autor>()
             .Where(w => w.AutorId == autorId)
             .ExecuteDeleteAsync();
+    }
+
+    /// <summary>
+    /// Atualiza dados de um autor
+    /// </summary>
+    /// <param name="autor">Dados do autor a atualizar</param>
+    /// <returns>Instância do autor atualizado</returns>
+    public async Task<Autor> AtualizarAutorAsync(Autor autor)
+    {
+        _ = autor ?? throw new ArgumentNullException(nameof(autor));
+
+        await _context.Set<Autor>()
+            .Where(w => w.AutorId == autor.AutorId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(p => p.Nome, autor.Nome));
+
+#pragma warning disable CS8603 // Possible null reference return.
+        return await _context.Set<Autor>().FirstOrDefaultAsync(f => f.AutorId == autor.AutorId);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 }

@@ -63,4 +63,22 @@ public class ManutencaoLivroAppService
 
         await _repository.RemoveAutorPorIdAsync(autorId);
     }
+
+    /// <summary>
+    /// Atualiza dados do autor
+    /// </summary>
+    /// <param name="autor"></param>
+    /// <returns>Instância do <see cref="Autor"/> com os dados atualizados</returns>
+    /// <exception cref="AutorRepetidoException">Quando o novo nome do autor já estiver cadastrado</exception>
+    public async Task<Autor> AtualizarAutorAsync(Autor autor)
+    {
+        _ = autor ?? throw new ArgumentNullException(nameof(autor));
+
+        if (await _repository.ExisteAutorComNomeExcetoIdAsync(autor.Nome, autor.AutorId))
+        {
+            throw new AutorRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");
+        }
+
+        return await _repository.AtualizarAutorAsync(autor);
+    }
 }

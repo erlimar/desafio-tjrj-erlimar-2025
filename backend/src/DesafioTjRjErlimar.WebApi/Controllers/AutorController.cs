@@ -18,8 +18,11 @@ public class AutorController : ControllerBase
 
     public AutorController(ILogger<AutorController> logger, ManutencaoLivroAppService manutencaoLivroAppService)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _manutencaoLivroAppService = manutencaoLivroAppService ?? throw new ArgumentNullException(nameof(manutencaoLivroAppService));
+        _logger = logger
+            ?? throw new ArgumentNullException(nameof(logger));
+
+        _manutencaoLivroAppService = manutencaoLivroAppService
+            ?? throw new ArgumentNullException(nameof(manutencaoLivroAppService));
     }
 
     /// <summary>
@@ -32,7 +35,7 @@ public class AutorController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AutorViewModel>> CadastrarNovoAutor(CadastrarNovoAutorViewModel model)
+    public async Task<ActionResult<AutorViewModel>> CadastrarNovoAutor(DadosAutorViewModel model)
     {
         _ = model ?? throw new ArgumentNullException(nameof(model));
         _ = model.Nome ?? throw new ArgumentNullException(nameof(model.Nome));
@@ -47,6 +50,46 @@ public class AutorController : ControllerBase
             Codigo = autorCadastrado.AutorId,
             Nome = autorCadastrado.Nome
         });
+    }
+
+    /// <summary>
+    /// Atualiza cadastro de um autor
+    /// </summary>
+    /// <param name="model">Dados para cadastro</param>
+    /// <returns>Dados do autor cadatrado</returns>
+    /// <response code="200">Autor atualizado com sucesso</response>
+    /// <response code="400">Dados inválidos</response>
+    [HttpPut("{autorId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AutorViewModel>> AtualizarAutor(
+        [Range(1, int.MaxValue, ErrorMessage = "O identificador precisa ser maior que zero")]
+        int autorId,
+        DadosAutorViewModel model)
+    {
+        _ = model ?? throw new ArgumentNullException(nameof(model));
+        _ = model.Nome ?? throw new ArgumentNullException(nameof(model.Nome));
+
+        try
+        {
+            var autorAtualizado = await _manutencaoLivroAppService.AtualizarAutorAsync(new Autor
+            {
+                AutorId = autorId,
+                Nome = model.Nome.Trim()
+            });
+
+            return Ok(new AutorViewModel
+            {
+                Codigo = autorAtualizado.AutorId,
+                Nome = autorAtualizado.Nome
+            });
+        }
+        catch (AutorRepetidoException ex)
+        {
+            ModelState.AddModelError("nome", ex.Message);
+
+            return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível atualizar o autor");
+        }
     }
 
     /// <summary>

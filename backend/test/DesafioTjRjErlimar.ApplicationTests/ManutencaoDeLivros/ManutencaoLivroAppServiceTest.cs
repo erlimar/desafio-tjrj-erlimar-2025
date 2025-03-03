@@ -49,6 +49,8 @@ public class ManutencaoLivroAppServiceTest
         );
 
         Assert.Equal("Autor com identificador 1 já existe", exception.Message);
+
+        mock.Verify(m => m.ExisteAutorComIdAsync(1), Times.Once);
     }
 
     [Fact(DisplayName = "Não se pode mais de um autor com mesmo nome")]
@@ -69,6 +71,8 @@ public class ManutencaoLivroAppServiceTest
         );
 
         Assert.Equal("Autor com nome 'Nome já existente' já existe", exception.Message);
+
+        mock.Verify(m => m.ExisteAutorComNomeAsync("Nome já existente"), Times.Once);
     }
 
     /// <summary>
@@ -98,6 +102,8 @@ public class ManutencaoLivroAppServiceTest
         Assert.NotNull(cadastro);
         Assert.Equal(1, cadastro.AutorId);
         Assert.Equal("Cadastro permitido", cadastro.Nome);
+
+        mock.Verify(m => m.CadastraNovoAutorAsync(It.IsAny<Autor>()), Times.Once);
     }
 
     /// <summary>
@@ -126,6 +132,8 @@ public class ManutencaoLivroAppServiceTest
 
         Assert.NotNull(cadastro);
         Assert.NotEqual(0, cadastro.AutorId);
+
+        mock.Verify(m => m.CadastraNovoAutorAsync(It.IsAny<Autor>()), Times.Once);
     }
 
     [Fact(DisplayName = "Lista de autores sempre está ordenada por nome")]
@@ -152,6 +160,8 @@ public class ManutencaoLivroAppServiceTest
         Assert.Equal(2, autoresOrdenados.ElementAt(0).AutorId);
         Assert.Equal(3, autoresOrdenados.ElementAt(1).AutorId);
         Assert.Equal(1, autoresOrdenados.ElementAt(2).AutorId);
+
+        mock.Verify(m => m.ListarAutoresAsync(), Times.Once);
     }
 
     [Fact(DisplayName = "Não se pode excluir um autor não cadastrado")]
@@ -168,6 +178,8 @@ public class ManutencaoLivroAppServiceTest
         );
 
         Assert.Equal("Autor com identificador 100 não existe para ser excluído", exception.Message);
+
+        mock.Verify(m => m.ExisteAutorComIdAsync(100), Times.Once);
     }
 
     [Fact(DisplayName = "Se pode excluir um autor cadastrado")]
@@ -182,5 +194,68 @@ public class ManutencaoLivroAppServiceTest
         await service.RemoverAutorPorIdAsync(100);
 
         Assert.True(true);
+
+        mock.Verify(m => m.ExisteAutorComIdAsync(100), Times.Once);
+    }
+
+    [Fact(DisplayName = "Atualizar autor não aceita nulo")]
+    public async Task AtualizarAutorNaoAceitaNulo()
+    {
+        var service = new ManutencaoLivroAppService(new Mock<IManutencaoLivroAppRepository>().Object);
+
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(
+            () => _ = service.AtualizarAutorAsync(null!)
+        );
+
+        Assert.Equal("autor", exception.ParamName);
+    }
+
+    [Fact(DisplayName = "Não se pode alterar nome de autor para nome já existente")]
+    public async Task NaoSePodeAlterarNomeDeAutorParaNomeJaExistente()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ExisteAutorComNomeExcetoIdAsync("Nome já existente", 200)).ReturnsAsync(true);
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
+            () => _ = service.AtualizarAutorAsync(new Autor
+            {
+                AutorId = 200,
+                Nome = "Nome já existente"
+            })
+        );
+
+        Assert.Equal("Já existe um autor com o novo nome 'Nome já existente' pretendido", exception.Message);
+
+        mock.Verify(m => m.ExisteAutorComNomeExcetoIdAsync("Nome já existente", 200), Times.Once);
+    }
+
+    [Fact(DisplayName = "Se pode atualizar um autor com nome não utilizado")]
+    public async Task SePodeAtualizarUmAutorComNomeNaoUtilizado()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ExisteAutorComNomeExcetoIdAsync("Nome não existente", 23)).ReturnsAsync(false);
+        mock.Setup(m => m.AtualizarAutorAsync(It.IsAny<Autor>()))
+            .ReturnsAsync(new Autor
+            {
+                AutorId = 23,
+                Nome = "Nome não existente"
+            });
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        var autorAtualizado = await service.AtualizarAutorAsync(new Autor
+        {
+            AutorId = 23,
+            Nome = "Nome não existente"
+        });
+
+        Assert.NotNull(autorAtualizado);
+
+        mock.Verify(m => m.ExisteAutorComNomeExcetoIdAsync("Nome não existente", 23), Times.Once);
+        mock.Verify(m => m.AtualizarAutorAsync(It.IsAny<Autor>()), Times.Once);
     }
 }
