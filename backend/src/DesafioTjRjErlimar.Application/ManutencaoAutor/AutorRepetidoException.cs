@@ -1,4 +1,4 @@
-namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros.Exceptions;
+namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 /// <summary>
 /// Exceção para quando se tenta cadastrar autor com mesmo nome ou identificador

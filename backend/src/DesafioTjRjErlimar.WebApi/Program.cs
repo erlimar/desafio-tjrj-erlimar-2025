@@ -1,4 +1,4 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 using DesafioTjRjErlimar.DatabaseAdapter;
 using DesafioTjRjErlimar.DatabaseAdapter.Repositories;
 
@@ -41,8 +41,8 @@ public class Program
 
         #region Configurações de serviços de aplicação
         builder.Services
-            .AddScoped<IManutencaoLivroAppRepository, ManutencaoLivroRelationalAppRepository>()
-            .AddScoped<ManutencaoLivroAppService>();
+            .AddScoped<IManutencaoAutorAppRepository, ManutencaoAutorRelationalAppRepository>()
+            .AddScoped<ManutencaoAutorAppService>();
         #endregion
 
         var app = builder.Build();

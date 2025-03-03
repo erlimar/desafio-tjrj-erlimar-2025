@@ -1,13 +1,10 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Exceptions;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
-namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros;
-
-public class ManutencaoLivroAppService
+public class ManutencaoAutorAppService
 {
-    private readonly IManutencaoLivroAppRepository _repository;
+    private readonly IManutencaoAutorAppRepository _repository;
 
-    public ManutencaoLivroAppService(IManutencaoLivroAppRepository repository)
+    public ManutencaoAutorAppService(IManutencaoAutorAppRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }

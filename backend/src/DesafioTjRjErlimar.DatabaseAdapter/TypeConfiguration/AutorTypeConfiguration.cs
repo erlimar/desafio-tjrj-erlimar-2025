@@ -1,4 +1,4 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Microsoft.EntityFrameworkCore;
 

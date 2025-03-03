@@ -1,4 +1,6 @@
-namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
+
+namespace DesafioTjRjErlimar.Application;
 
 /// <summary>
 /// Representa um livro

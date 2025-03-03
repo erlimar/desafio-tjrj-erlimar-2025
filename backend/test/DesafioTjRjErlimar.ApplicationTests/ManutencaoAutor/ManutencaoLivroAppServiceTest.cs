@@ -1,19 +1,17 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Exceptions;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Moq;
 
-namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoDeLivros;
+namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoAutor;
 
-[Trait("target", nameof(ManutencaoLivroAppService))]
+[Trait("target", nameof(ManutencaoAutorAppService))]
 public class ManutencaoLivroAppServiceTest
 {
     [Fact(DisplayName = "Um repositório é obrigatório")]
     public void UmRepositorioEhObrigatorio()
     {
         var exception = Assert.Throws<ArgumentNullException>(
-            () => _ = new ManutencaoLivroAppService(null!)
+            () => _ = new ManutencaoAutorAppService(null!)
         );
 
         Assert.Equal("repository", exception.ParamName);
@@ -22,7 +20,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Adicionar autor não aceita nulo")]
     public async Task AdicionarAutorNaoAceitaNulo()
     {
-        var service = new ManutencaoLivroAppService(new Mock<IManutencaoLivroAppRepository>().Object);
+        var service = new ManutencaoAutorAppService(new Mock<IManutencaoAutorAppRepository>().Object);
 
         var exception = await Assert.ThrowsAsync<ArgumentNullException>(
             () => _ = service.AdicionarAutorAsync(null!)
@@ -34,11 +32,11 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Não se pode mais de um autor com mesmo identificador")]
     public async Task NaoSePodeMaisDeUmAutorComMesmoId()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComIdAsync(1)).ReturnsAsync(true);
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
             () => _ = service.AdicionarAutorAsync(new Autor
@@ -56,11 +54,11 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Não se pode mais de um autor com mesmo nome")]
     public async Task NaoSePodeMaisDeUmAutorComMesmoNome()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComNomeAsync("Nome já existente")).ReturnsAsync(true);
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
             () => _ = service.AdicionarAutorAsync(new Autor
@@ -82,7 +80,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Cadastro permitido com id não zero permanece inauterado")]
     public async Task CadastroPermitidoComIdNaoZeroPermaneceInauterado()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.CadastraNovoAutorAsync(It.IsAny<Autor>()))
             .ReturnsAsync(new Autor
@@ -91,7 +89,7 @@ public class ManutencaoLivroAppServiceTest
                 Nome = "Cadastro permitido"
             });
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var cadastro = await service.AdicionarAutorAsync(new Autor
         {
@@ -113,7 +111,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Cadastro permitido com id zero gera um novo identificador")]
     public async Task CadastroPermitidoComIdZeroGeraUmNovoId()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.CadastraNovoAutorAsync(It.IsAny<Autor>()))
             .ReturnsAsync(new Autor
@@ -122,7 +120,7 @@ public class ManutencaoLivroAppServiceTest
                 Nome = "Cadastro permitido"
             });
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var cadastro = await service.AdicionarAutorAsync(new Autor
         {
@@ -139,7 +137,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Lista de autores sempre está ordenada por nome")]
     public async Task ListaDeAutoresSempreEstaOrdenadaPorNome()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ListarAutoresAsync())
             .ReturnsAsync(new List<Autor>()
@@ -149,7 +147,7 @@ public class ManutencaoLivroAppServiceTest
                 new Autor { AutorId = 3, Nome = "B" }
             });
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var autoresOrdenados = await service.ObterAutoresAsync();
 
@@ -167,11 +165,11 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Não se pode excluir um autor não cadastrado")]
     public async Task NaoSePodeExcluirUmAutorNaoCadastrado()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComIdAsync(100)).ReturnsAsync(false);
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var exception = await Assert.ThrowsAsync<RegistroInexistenteException>(
             () => _ = service.RemoverAutorPorIdAsync(100)
@@ -185,11 +183,11 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Se pode excluir um autor cadastrado")]
     public async Task SePodeExcluirUmAutorCadastrado()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComIdAsync(100)).ReturnsAsync(true);
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         await service.RemoverAutorPorIdAsync(100);
 
@@ -201,7 +199,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Atualizar autor não aceita nulo")]
     public async Task AtualizarAutorNaoAceitaNulo()
     {
-        var service = new ManutencaoLivroAppService(new Mock<IManutencaoLivroAppRepository>().Object);
+        var service = new ManutencaoAutorAppService(new Mock<IManutencaoAutorAppRepository>().Object);
 
         var exception = await Assert.ThrowsAsync<ArgumentNullException>(
             () => _ = service.AtualizarAutorAsync(null!)
@@ -213,11 +211,11 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Não se pode alterar nome de autor para nome já existente")]
     public async Task NaoSePodeAlterarNomeDeAutorParaNomeJaExistente()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComNomeExcetoIdAsync("Nome já existente", 200)).ReturnsAsync(true);
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
             () => _ = service.AtualizarAutorAsync(new Autor
@@ -235,7 +233,7 @@ public class ManutencaoLivroAppServiceTest
     [Fact(DisplayName = "Se pode atualizar um autor com nome não utilizado")]
     public async Task SePodeAtualizarUmAutorComNomeNaoUtilizado()
     {
-        var mock = new Mock<IManutencaoLivroAppRepository>();
+        var mock = new Mock<IManutencaoAutorAppRepository>();
 
         mock.Setup(m => m.ExisteAutorComNomeExcetoIdAsync("Nome não existente", 23)).ReturnsAsync(false);
         mock.Setup(m => m.AtualizarAutorAsync(It.IsAny<Autor>()))
@@ -245,7 +243,7 @@ public class ManutencaoLivroAppServiceTest
                 Nome = "Nome não existente"
             });
 
-        var service = new ManutencaoLivroAppService(mock.Object);
+        var service = new ManutencaoAutorAppService(mock.Object);
 
         var autorAtualizado = await service.AtualizarAutorAsync(new Autor
         {

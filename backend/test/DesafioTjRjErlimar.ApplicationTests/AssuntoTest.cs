@@ -1,6 +1,6 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application;
 
-namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoDeLivros.Model;
+namespace DesafioTjRjErlimar.ApplicationTests;
 
 [Trait("target", nameof(Assunto))]
 public class AssuntoTest

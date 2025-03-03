@@ -1,16 +1,15 @@
 
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace DesafioTjRjErlimar.DatabaseAdapter.Repositories;
 
-public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppRepository
+public class ManutencaoAutorRelationalAppRepository : IManutencaoAutorAppRepository
 {
     private readonly DatabaseContext _context;
 
-    public ManutencaoLivroRelationalAppRepository(DatabaseContext context)
+    public ManutencaoAutorRelationalAppRepository(DatabaseContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }

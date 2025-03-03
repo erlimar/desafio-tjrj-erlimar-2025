@@ -1,9 +1,6 @@
+namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
-
-namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros;
-
-public interface IManutencaoLivroAppRepository
+public interface IManutencaoAutorAppRepository
 {
     /// <summary>
     /// Verifica se já existe um autor com identificador informado

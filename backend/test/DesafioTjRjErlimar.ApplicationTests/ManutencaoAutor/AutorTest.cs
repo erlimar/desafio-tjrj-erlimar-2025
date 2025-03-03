@@ -1,6 +1,6 @@
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
-namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoDeLivros.Model;
+namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoAutor;
 
 [Trait("target", nameof(Autor))]
 public class AutorTest

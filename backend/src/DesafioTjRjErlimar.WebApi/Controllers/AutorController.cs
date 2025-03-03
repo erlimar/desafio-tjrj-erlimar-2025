@@ -1,8 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Exceptions;
-using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
 using DesafioTjRjErlimar.WebApi.Model;
 
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +12,9 @@ namespace DesafioTjRjErlimar.WebApi.Controllers;
 public class AutorController : ControllerBase
 {
     private readonly ILogger<AutorController> _logger;
-    private readonly ManutencaoLivroAppService _manutencaoLivroAppService;
+    private readonly ManutencaoAutorAppService _manutencaoLivroAppService;
 
-    public AutorController(ILogger<AutorController> logger, ManutencaoLivroAppService manutencaoLivroAppService)
+    public AutorController(ILogger<AutorController> logger, ManutencaoAutorAppService manutencaoLivroAppService)
     {
         _logger = logger
             ?? throw new ArgumentNullException(nameof(logger));
