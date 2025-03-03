@@ -40,16 +40,25 @@ public class AutorController : ControllerBase
         _ = model ?? throw new ArgumentNullException(nameof(model));
         _ = model.Nome ?? throw new ArgumentNullException(nameof(model.Nome));
 
-        var autorCadastrado = await _manutencaoLivroAppService.AdicionarAutorAsync(new Autor
+        try
         {
-            Nome = model.Nome.Trim()
-        });
+            var autorCadastrado = await _manutencaoLivroAppService.AdicionarAutorAsync(new Autor
+            {
+                Nome = model.Nome.Trim()
+            });
 
-        return Created("", new AutorViewModel
+            return Created("", new AutorViewModel
+            {
+                Codigo = autorCadastrado.AutorId,
+                Nome = autorCadastrado.Nome
+            });
+        }
+        catch (AutorRepetidoException ex)
         {
-            Codigo = autorCadastrado.AutorId,
-            Nome = autorCadastrado.Nome
-        });
+            ModelState.AddModelError("nome", ex.Message);
+
+            return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível cadastrar o autor");
+        }
     }
 
     /// <summary>
@@ -59,7 +68,7 @@ public class AutorController : ControllerBase
     /// <returns>Dados do autor cadatrado</returns>
     /// <response code="200">Autor atualizado com sucesso</response>
     /// <response code="400">Dados inválidos</response>
-    [HttpPut("{autorId}")]
+    [HttpPost("{autorId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AutorViewModel>> AtualizarAutor(
