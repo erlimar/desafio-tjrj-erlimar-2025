@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
+/// <summary>
+/// Representa um autor de livro
+/// </summary>
 public class Autor
 {
     public int AutorId { get; set; }

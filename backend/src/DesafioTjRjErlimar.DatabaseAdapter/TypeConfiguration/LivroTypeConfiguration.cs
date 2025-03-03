@@ -1,5 +1,3 @@
-using System;
-
 using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
 using Microsoft.EntityFrameworkCore;

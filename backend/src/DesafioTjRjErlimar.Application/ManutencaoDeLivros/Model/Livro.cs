@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 
+/// <summary>
+/// Representa um livro
+/// </summary>
 public class Livro
 {
     public int LivroId { get; set; }
