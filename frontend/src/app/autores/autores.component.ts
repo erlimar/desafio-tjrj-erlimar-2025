@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-lista-autores',
+  selector: 'app-autores',
   imports: [CommonModule, FormsModule],
-  templateUrl: './lista-autores.component.html',
-  styleUrl: './lista-autores.component.css'
+  templateUrl: './autores.component.html',
+  styleUrl: './autores.component.css'
 })
-export class ListaAutoresComponent {
+export class AutoresComponent {
   webapi: WebapiService = inject(WebapiService);
 
   autoresCadastrados: Autor[] = []
