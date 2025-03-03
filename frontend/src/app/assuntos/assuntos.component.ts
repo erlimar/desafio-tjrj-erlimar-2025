@@ -1,37 +1,37 @@
 import { Component, inject } from '@angular/core';
-import { AutoresService } from '../autores.service';
-import { Autor } from '../autor.data';
+import { AssuntosService } from '../assuntos.service';
+import { Assunto } from '../assunto.data';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-autores',
+  selector: 'app-assuntos',
   imports: [CommonModule, FormsModule],
-  templateUrl: './autores.component.html',
-  styleUrl: './autores.component.css'
+  templateUrl: './assuntos.component.html',
+  styleUrl: './assuntos.component.css'
 })
-export class AutoresComponent {
-  autoresService: AutoresService = inject(AutoresService);
+export class AssuntosComponent {
+  assuntosService: AssuntosService = inject(AssuntosService);
 
-  autoresCadastrados: Autor[] = []
+  assuntosCadastrados: Assunto[] = []
 
-  selecionado: Autor | null = null;
+  selecionado: Assunto | null = null;
   acaoSelecionada: string | null = null;
   errosServidor: string[] = [];
   carregando: boolean = false;
 
   constructor() {
-    this.autoresService.obterTodosAutores().subscribe((autores: Autor[]) => {
-      this.autoresCadastrados = autores;
+    this.assuntosService.obterTodosAssuntos().subscribe((assuntos: Assunto[]) => {
+      this.assuntosCadastrados = assuntos;
     });
   }
 
-  incluirNovoAutor() {
-    this.selecionar({ codigo: 0, nome: '' }, 'cadastrar');
+  incluirNovoAssunto() {
+    this.selecionar({ codigo: 0, descricao: '' }, 'cadastrar');
   }
 
-  selecionar(autor: Autor, acao: string) {
-    this.selecionado = { codigo: autor.codigo, nome: autor.nome };
+  selecionar(assunto: Assunto, acao: string) {
+    this.selecionado = { codigo: assunto.codigo, descricao: assunto.descricao };
     this.acaoSelecionada = acao;
   }
 
@@ -46,8 +46,8 @@ export class AutoresComponent {
     this.carregando = true;
 
     if (this.selecionado && this.acaoSelecionada === 'excluir') {
-      this.autoresService.excluirAutorPorId(this.selecionado.codigo).subscribe((r) => {
-        this.autoresCadastrados = this.autoresCadastrados.filter((a) => a.codigo !== this.selecionado?.codigo);
+      this.assuntosService.excluirAssuntoPorId(this.selecionado.codigo).subscribe((r) => {
+        this.assuntosCadastrados = this.assuntosCadastrados.filter((a) => a.codigo !== this.selecionado?.codigo);
         this.carregando = false;
         this.selecionado = null;
         this.acaoSelecionada = null;
@@ -63,9 +63,9 @@ export class AutoresComponent {
 
     // Incluir novo
     if (this.selecionado && this.acaoSelecionada === 'cadastrar' && !this.selecionado.codigo) {
-      this.autoresService.incluirNovoAutor(this.selecionado).subscribe({
-        next: (autorNovo: Autor) => {
-          this.autoresCadastrados.push(autorNovo);
+      this.assuntosService.incluirNovoAssunto(this.selecionado).subscribe({
+        next: (assuntoNovo: Assunto) => {
+          this.assuntosCadastrados.push(assuntoNovo);
           this.carregando = false;
           this.selecionado = null;
           this.acaoSelecionada = null;
@@ -87,10 +87,10 @@ export class AutoresComponent {
 
       // Atualizar existente
     } else if (this.selecionado && this.acaoSelecionada === 'cadastrar' && this.selecionado.codigo) {
-      this.autoresService.atualizarAutor(this.selecionado).subscribe({
-        next: (autorAtualizado: Autor) => {
-          this.autoresCadastrados = this.autoresCadastrados.filter((a) => a.codigo !== autorAtualizado.codigo);
-          this.autoresCadastrados.push(autorAtualizado);
+      this.assuntosService.atualizarAssunto(this.selecionado).subscribe({
+        next: (assuntoAtualizado: Assunto) => {
+          this.assuntosCadastrados = this.assuntosCadastrados.filter((a) => a.codigo !== assuntoAtualizado.codigo);
+          this.assuntosCadastrados.push(assuntoAtualizado);
           this.carregando = false;
           this.selecionado = null;
           this.acaoSelecionada = null;
