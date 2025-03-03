@@ -12,14 +12,10 @@ namespace DesafioTjRjErlimar.WebApi.Controllers;
 [Route("autores")]
 public class AutorController : ControllerBase
 {
-    private readonly ILogger<AutorController> _logger;
     private readonly ManutencaoAutorAppService _manutencaoLivroAppService;
 
-    public AutorController(ILogger<AutorController> logger, ManutencaoAutorAppService manutencaoLivroAppService)
+    public AutorController(ManutencaoAutorAppService manutencaoLivroAppService)
     {
-        _logger = logger
-            ?? throw new ArgumentNullException(nameof(logger));
-
         _manutencaoLivroAppService = manutencaoLivroAppService
             ?? throw new ArgumentNullException(nameof(manutencaoLivroAppService));
     }
