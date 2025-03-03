@@ -14,6 +14,10 @@ export class WebapiService {
 
   }
 
+  obterUrlRelatorioAutores(){
+    return `${this.url}/relatorios/autores`
+  }
+
   obterTodosAutores(): Observable<Autor[]> {
     return this.http.get<Autor[]>(`${this.url}/autores`);
   }
