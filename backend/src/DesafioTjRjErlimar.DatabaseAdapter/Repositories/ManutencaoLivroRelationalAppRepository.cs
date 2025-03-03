@@ -94,9 +94,8 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
     /// <param name="autorId">Identificador do autor a excluir</param>
     public async Task RemoveAutorPorIdAsync(int autorId)
     {
-        var x = await _context.Set<Autor>().Where(w => w.AutorId == autorId)
+        await _context.Set<Autor>()
+            .Where(w => w.AutorId == autorId)
             .ExecuteDeleteAsync();
-
-        var y = x;
     }
 }
