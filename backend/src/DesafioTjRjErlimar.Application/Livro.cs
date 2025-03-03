@@ -1,3 +1,4 @@
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 namespace DesafioTjRjErlimar.Application;

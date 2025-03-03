@@ -1,3 +1,4 @@
+using DesafioTjRjErlimar.Application;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Moq;
@@ -5,7 +6,7 @@ using Moq;
 namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoAutor;
 
 [Trait("target", nameof(ManutencaoAutorAppService))]
-public class ManutencaoLivroAppServiceTest
+public class ManutencaoAutorAppServiceTest
 {
     [Fact(DisplayName = "Um repositório é obrigatório")]
     public void UmRepositorioEhObrigatorio()
@@ -38,7 +39,7 @@ public class ManutencaoLivroAppServiceTest
 
         var service = new ManutencaoAutorAppService(mock.Object);
 
-        var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
+        var exception = await Assert.ThrowsAsync<RegistroRepetidoException>(
             () => _ = service.AdicionarAutorAsync(new Autor
             {
                 AutorId = 1,
@@ -60,7 +61,7 @@ public class ManutencaoLivroAppServiceTest
 
         var service = new ManutencaoAutorAppService(mock.Object);
 
-        var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
+        var exception = await Assert.ThrowsAsync<RegistroRepetidoException>(
             () => _ = service.AdicionarAutorAsync(new Autor
             {
                 AutorId = 1,
@@ -77,8 +78,8 @@ public class ManutencaoLivroAppServiceTest
     /// Quando se cadastra um autor informando um Id diferente de zero, e o cadastro é permitido,
     /// o autor deve ser cadastrado com o Id informado.
     /// </summary>
-    [Fact(DisplayName = "Cadastro permitido com id não zero permanece inauterado")]
-    public async Task CadastroPermitidoComIdNaoZeroPermaneceInauterado()
+    [Fact(DisplayName = "Cadastro permitido com id não zero permanece inalterado")]
+    public async Task CadastroPermitidoComIdNaoZeroPermaneceInalterado()
     {
         var mock = new Mock<IManutencaoAutorAppRepository>();
 
@@ -217,7 +218,7 @@ public class ManutencaoLivroAppServiceTest
 
         var service = new ManutencaoAutorAppService(mock.Object);
 
-        var exception = await Assert.ThrowsAsync<AutorRepetidoException>(
+        var exception = await Assert.ThrowsAsync<RegistroRepetidoException>(
             () => _ = service.AtualizarAutorAsync(new Autor
             {
                 AutorId = 200,

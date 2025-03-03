@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
+using DesafioTjRjErlimar.Application;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 using DesafioTjRjErlimar.WebApi.Model;
 
@@ -51,7 +52,7 @@ public class AutorController : ControllerBase
                 Nome = autorCadastrado.Nome
             });
         }
-        catch (AutorRepetidoException ex)
+        catch (RegistroRepetidoException ex)
         {
             ModelState.AddModelError("nome", ex.Message);
 
@@ -91,7 +92,7 @@ public class AutorController : ControllerBase
                 Nome = autorAtualizado.Nome
             });
         }
-        catch (AutorRepetidoException ex)
+        catch (RegistroRepetidoException ex)
         {
             ModelState.AddModelError("nome", ex.Message);
 

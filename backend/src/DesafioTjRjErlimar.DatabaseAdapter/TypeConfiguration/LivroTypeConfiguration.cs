@@ -1,4 +1,5 @@
 using DesafioTjRjErlimar.Application;
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Microsoft.EntityFrameworkCore;

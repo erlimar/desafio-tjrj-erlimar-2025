@@ -1,4 +1,4 @@
-using DesafioTjRjErlimar.Application;
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,4 +1,4 @@
-namespace DesafioTjRjErlimar.Application;
+namespace DesafioTjRjErlimar.Application.ManutencaoAssunto;
 
 /// <summary>
 /// Representa um assunto para agrupar livros

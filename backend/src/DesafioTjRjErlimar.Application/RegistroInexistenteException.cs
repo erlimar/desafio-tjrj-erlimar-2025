@@ -1,4 +1,4 @@
-namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
+namespace DesafioTjRjErlimar.Application;
 
 /// <summary>
 /// Exceção para quando se tenta manipular um registro inexistente

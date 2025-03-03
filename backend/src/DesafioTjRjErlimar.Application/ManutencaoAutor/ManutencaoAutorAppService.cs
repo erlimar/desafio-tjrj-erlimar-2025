@@ -21,12 +21,12 @@ public class ManutencaoAutorAppService
 
         if (await _repository.ExisteAutorComIdAsync(autor.AutorId))
         {
-            throw new AutorRepetidoException($"Autor com identificador {autor.AutorId} já existe");
+            throw new RegistroRepetidoException($"Autor com identificador {autor.AutorId} já existe");
         }
 
         if (await _repository.ExisteAutorComNomeAsync(autor.Nome))
         {
-            throw new AutorRepetidoException($"Autor com nome '{autor.Nome}' já existe");
+            throw new RegistroRepetidoException($"Autor com nome '{autor.Nome}' já existe");
         }
 
         // TODO: Validar retorno do repositório e tratar situações inesperadas de banco
@@ -73,7 +73,7 @@ public class ManutencaoAutorAppService
 
         if (await _repository.ExisteAutorComNomeExcetoIdAsync(autor.Nome, autor.AutorId))
         {
-            throw new AutorRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");
+            throw new RegistroRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");
         }
 
         return await _repository.AtualizarAutorAsync(autor);
