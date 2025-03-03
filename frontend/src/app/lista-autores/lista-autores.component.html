@@ -1,0 +1,144 @@
+<div class="container" *ngIf="!selecionado">
+  <div class="py-4">
+    <h1>
+      <i class="bi bi-person-workspace"></i>
+      Autores cadastrados
+      <button (click)="incluirNovoAutor()" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Novo autor
+      </button>
+    </h1>
+  </div>
+  <div>
+    @if (autoresCadastrados.length) {
+    <table class="table table-hover table-responsive">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        @for (autor of autoresCadastrados; track autor.codigo) {
+        <tr>
+          <th>{{ autor.codigo }}</th>
+          <td>{{ autor.nome }}</td>
+          <td class="text-end">
+            <div class="btn-group btn-group-sm">
+              <button (click)="selecionar(autor, 'excluir')" class="btn btn-outline-danger"><i class="bi bi-trash3"></i>
+                Excluir</button>
+              <button (click)="selecionar(autor,'cadastrar')" class="btn btn-outline-primary"><i
+                  class="bi bi-text-paragraph"></i> Editar</button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+  <div>
+    <span class="text-secondary">
+      Cadastrados <span class="badge text-bg-warning">{{ autoresCadastrados.length }}</span>
+    </span>
+  </div>
+</div>
+
+<!-- ********** [EXCLUIR] *************-->
+<div class="container" *ngIf="selecionado && acaoSelecionada === 'excluir'">
+  <div class="py-4">
+    <h1>
+      <i class="bi bi-trash3"></i>
+      Excluir autor cadastrado
+    </h1>
+  </div>
+
+  <div class="modal modal-sheet position-static d-block p-4 py-md-5">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-3 shadow">
+        <div class="modal-body p-4 text-center">
+          <h5 class="mb-0">/ {{ selecionado.codigo }} / - {{ selecionado.nome }}</h5>
+          <p class="mb-0">Confirma a exclusão do autor?</p>
+        </div>
+        <div class="modal-footer flex-nowrap p-0">
+          <button (click)="confirmaExclusaoSelecionado()"
+            class="btn btn-lg btn-danger fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end">
+            <strong *ngIf="!carregando">Confirmo!</strong>
+            <span *ngIf="carregando">
+              <span class="spinner-border spinner-border-sm"></span>
+              <span> Excluindo...</span>
+            </span>
+          </button>
+          <button (click)="cancelarSelecao()"
+            class="btn btn-lg btn-light fs-6 text-decoration-none col-6 py-3 m-0 rounded-0">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ********** [CADASTRO] *************-->
+<div class="container text-center" *ngIf="selecionado && acaoSelecionada === 'cadastrar'">
+  <div class="py-4">
+    <h1>
+      @if (!selecionado.codigo){
+      <span>
+        <i class="bi bi-plus-lg"></i>
+        Novo autor
+      </span>
+      } @else {
+      <span>
+        <i class="bi bi-text-paragraph"></i>
+        Atualizar autor
+      </span>
+      }
+    </h1>
+  </div>
+
+  <div class="modal modal-sheet position-static d-block p-2">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header p-5 pb-4 border-bottom-0">
+        </div>
+
+        <div class="modal-body p-5 pt-0">
+          <div class="mb-3" *ngIf="selecionado.codigo">
+            <span class="badge text-bg-info">ID: #{{ selecionado.codigo }}</span>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" id="floatingInput" [(ngModel)]="selecionado.nome"
+              [readonly]="carregando">
+            <label for="floatingInput">Nome</label>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <button (click)="confirmaCadastroSelecionado()" [disabled]="carregando"
+              class=" mb-2 btn btn-lg rounded-3 btn-primary">
+              <span *ngIf="!carregando">
+                <i class="bi bi-save"></i>
+                <strong> Salvar</strong>
+              </span>
+              <span *ngIf="carregando">
+                <span class="spinner-border spinner-border-sm"></span>
+                <span> Salvando...</span>
+              </span>
+            </button>
+            <button (click)="cancelarSelecao()" [disabled]="carregando" class="mb-2 btn btn-lg rounded-3 btn-secondary">
+              <i class="bi bi-x"></i>
+              Cancelar
+            </button>
+          </div>
+          <hr class="my-4">
+          <div *ngIf="errosServidor.length">
+            @for (erro of errosServidor; track $index) {
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+              <i class="bi bi-exclamation-triangle-fill">&nbsp;</i>
+              {{ erro }}
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
