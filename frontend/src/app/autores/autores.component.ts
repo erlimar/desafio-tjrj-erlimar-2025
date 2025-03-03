@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { WebapiService } from '../webapi.service';
+import { AutoresService } from '../autores.service';
 import { Autor } from '../autor.data';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './autores.component.css'
 })
 export class AutoresComponent {
-  webapi: WebapiService = inject(WebapiService);
+  autoresService: AutoresService = inject(AutoresService);
 
   autoresCadastrados: Autor[] = []
 
@@ -21,7 +21,7 @@ export class AutoresComponent {
   carregando: boolean = false;
 
   constructor() {
-    this.webapi.obterTodosAutores().subscribe((autores: Autor[]) => {
+    this.autoresService.obterTodosAutores().subscribe((autores: Autor[]) => {
       this.autoresCadastrados = autores;
     });
   }
@@ -46,7 +46,7 @@ export class AutoresComponent {
     this.carregando = true;
 
     if (this.selecionado && this.acaoSelecionada === 'excluir') {
-      this.webapi.excluirAutorPorId(this.selecionado.codigo).subscribe((r) => {
+      this.autoresService.excluirAutorPorId(this.selecionado.codigo).subscribe((r) => {
         this.autoresCadastrados = this.autoresCadastrados.filter((a) => a.codigo !== this.selecionado?.codigo);
         this.carregando = false;
         this.selecionado = null;
@@ -63,7 +63,7 @@ export class AutoresComponent {
 
     // Incluir novo
     if (this.selecionado && this.acaoSelecionada === 'cadastrar' && !this.selecionado.codigo) {
-      this.webapi.incluirNovoAutor(this.selecionado).subscribe({
+      this.autoresService.incluirNovoAutor(this.selecionado).subscribe({
         next: (autorNovo: Autor) => {
           this.autoresCadastrados.push(autorNovo);
           this.carregando = false;
@@ -87,7 +87,7 @@ export class AutoresComponent {
 
       // Atualizar existente
     } else if (this.selecionado && this.acaoSelecionada === 'cadastrar' && this.selecionado.codigo) {
-      this.webapi.atualizarAutor(this.selecionado).subscribe({
+      this.autoresService.atualizarAutor(this.selecionado).subscribe({
         next: (autorAtualizado: Autor) => {
           this.autoresCadastrados = this.autoresCadastrados.filter((a) => a.codigo !== autorAtualizado.codigo);
           this.autoresCadastrados.push(autorAtualizado);
