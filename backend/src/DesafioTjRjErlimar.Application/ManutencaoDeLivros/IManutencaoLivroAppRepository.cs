@@ -30,4 +30,10 @@ public interface IManutencaoLivroAppRepository
     /// Lista todos os autores
     /// </summary>
     Task<IEnumerable<Autor>> ListarAutoresAsync();
+
+    /// <summary>
+    /// Remove um autor por identificador
+    /// </summary>
+    /// <param name="autorId">Identificador do autor a excluir</param>
+    Task RemoveAutorPorIdAsync(int autorId);
 }

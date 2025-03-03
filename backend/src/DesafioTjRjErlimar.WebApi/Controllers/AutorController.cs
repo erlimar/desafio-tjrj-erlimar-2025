@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 using DesafioTjRjErlimar.Application.ManutencaoDeLivros;
+using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Exceptions;
 using DesafioTjRjErlimar.Application.ManutencaoDeLivros.Model;
 using DesafioTjRjErlimar.WebApi.Model;
 
@@ -63,5 +66,30 @@ public class AutorController : ControllerBase
         });
 
         return Ok(autoresViewModel);
+    }
+
+    /// <summary>
+    /// Remove um autor
+    /// </summary>
+    /// <param name="autorId">Identificador do autor para excluir</param>
+    [HttpDelete("{autorId}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> RemoverAutor(
+        [Range(1, int.MaxValue, ErrorMessage = "O identificador precisa ser maior que zero")]
+        int autorId)
+    {
+        try
+        {
+            await _manutencaoLivroAppService.RemoverAutorPorIdAsync(autorId);
+        }
+        catch (RegistroInexistenteException ex)
+        {
+            ModelState.AddModelError("autorId", ex.Message);
+
+            return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível remover o autor");
+        }
+
+        return NoContent();
     }
 }

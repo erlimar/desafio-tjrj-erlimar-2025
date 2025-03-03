@@ -153,4 +153,34 @@ public class ManutencaoLivroAppServiceTest
         Assert.Equal(3, autoresOrdenados.ElementAt(1).AutorId);
         Assert.Equal(1, autoresOrdenados.ElementAt(2).AutorId);
     }
+
+    [Fact(DisplayName = "Não se pode excluir um autor não cadastrado")]
+    public async Task NaoSePodeExcluirUmAutorNaoCadastrado()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ExisteAutorComIdAsync(100)).ReturnsAsync(false);
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        var exception = await Assert.ThrowsAsync<RegistroInexistenteException>(
+            () => _ = service.RemoverAutorPorIdAsync(100)
+        );
+
+        Assert.Equal("Autor com identificador 100 não existe para ser excluído", exception.Message);
+    }
+
+    [Fact(DisplayName = "Se pode excluir um autor cadastrado")]
+    public async Task SePodeExcluirUmAutorCadastrado()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ExisteAutorComIdAsync(100)).ReturnsAsync(true);
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        await service.RemoverAutorPorIdAsync(100);
+
+        Assert.True(true);
+    }
 }

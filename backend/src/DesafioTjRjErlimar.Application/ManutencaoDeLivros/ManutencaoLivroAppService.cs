@@ -48,4 +48,19 @@ public class ManutencaoLivroAppService
 
         return autoresOrdenados;
     }
+
+    /// <summary>
+    /// Remove um autor por identificador
+    /// </summary>
+    /// <param name="autorId">Identificador do autor a excluir</param>
+    /// <exception cref="RegistroInexistenteException"></exception>
+    public async Task RemoverAutorPorIdAsync(int autorId)
+    {
+        if (!await _repository.ExisteAutorComIdAsync(autorId))
+        {
+            throw new RegistroInexistenteException($"Autor com identificador {autorId} não existe para ser excluído");
+        }
+
+        await _repository.RemoveAutorPorIdAsync(autorId);
+    }
 }

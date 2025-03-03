@@ -87,4 +87,16 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
     {
         return await _context.Set<Autor>().AsNoTracking().ToListAsync();
     }
+
+    /// <summary>
+    /// Remove um autor por identificador
+    /// </summary>
+    /// <param name="autorId">Identificador do autor a excluir</param>
+    public async Task RemoveAutorPorIdAsync(int autorId)
+    {
+        var x = await _context.Set<Autor>().Where(w => w.AutorId == autorId)
+            .ExecuteDeleteAsync();
+
+        var y = x;
+    }
 }
