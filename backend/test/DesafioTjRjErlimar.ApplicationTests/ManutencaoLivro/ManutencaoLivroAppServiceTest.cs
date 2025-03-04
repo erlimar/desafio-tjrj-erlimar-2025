@@ -209,7 +209,7 @@ public class ManutencaoLivroAppServiceTest
         var service = new ManutencaoLivroAppService(new Mock<IManutencaoLivroAppRepository>().Object);
 
         var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-            () => _ = service.AtualizarLivroAsync(null!)
+            () => _ = service.AtualizarLivroAsync(null!, null, null)
         );
 
         Assert.Equal("livro", exception.ParamName);

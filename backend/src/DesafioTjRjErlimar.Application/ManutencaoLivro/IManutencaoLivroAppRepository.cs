@@ -1,3 +1,6 @@
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
+using DesafioTjRjErlimar.Application.ManutencaoAutor;
+
 namespace DesafioTjRjErlimar.Application.ManutencaoLivro;
 
 /// <summary>
@@ -45,9 +48,37 @@ public interface IManutencaoLivroAppRepository
     Task<Livro> AtualizarLivroAsync(Livro livro);
 
     /// <summary>
+    /// Atualiza autores de um livro
+    /// </summary>
+    /// <param name="livroId">Identificador do livro</param>
+    /// <param name="autores">Código dos autores vinculados</param>
+    Task AtualizarAutoresDoLivro(int livroId, IEnumerable<int> autores);
+
+    /// <summary>
+    /// Atualiza assuntos de um livro
+    /// </summary>
+    /// <param name="livroId">Identificador do livro</param>
+    /// <param name="assuntos">Códigos dos assuntos vinculados</param>
+    Task AtualizarAssuntosDoLivro(int livroId, IEnumerable<int> assuntos);
+
+    /// <summary>
     /// Verifica se já existe um livro com título informado, exceto o identificador informado
     /// </summary>
     /// <param name="titulo">Título do <see cref="Livro"/></param>
     /// <param name="idExcecao">Identificador a desconsiderar na comparação</param>
     Task<bool> ExisteLivroComTituloExcetoIdAsync(string titulo, int idExcecao);
+
+    /// <summary>
+    /// Obter autores de um livro
+    /// </summary>
+    /// <param name="livroId">Identificador do livro</param>
+    /// <returns>Lista de <see cref="Autor"/></returns>
+    Task<IEnumerable<Autor>> ObterAutoresDoLivroAsync(int livroId);
+
+    /// <summary>
+    /// Obter assuntos de um livro
+    /// </summary>
+    /// <param name="livroId">Identificador do livro</param>
+    /// <returns>Lista de <see cref="Assunto"/></returns>
+    Task<IEnumerable<Assunto>> ObterAssuntosDoLivroAsync(int livroId);
 }

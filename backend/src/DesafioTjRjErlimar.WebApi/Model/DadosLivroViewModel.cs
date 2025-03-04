@@ -24,4 +24,14 @@ public class DadosLivroViewModel
     /// Ano de publicação do livro
     /// </summary>
     public int AnoPublicacao { get; set; }
+
+    /// <summary>
+    /// Autores do livro
+    /// </summary>
+    public IEnumerable<CodigoViewModel> Autores { get; set; }
+
+    /// <summary>
+    /// Assuntos do livro
+    /// </summary>
+    public IEnumerable<CodigoViewModel> Assuntos { get; set; }
 }

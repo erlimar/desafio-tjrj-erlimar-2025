@@ -44,7 +44,9 @@ public class LivroController : ControllerBase
                 Editora = model.Editora.Trim(),
                 Edicao = model.Edicao,
                 AnoPublicacao = model.AnoPublicacao
-            });
+            },
+            model.Autores.Select(s => s.Codigo),
+            model.Assuntos.Select(s => s.Codigo));
 
             return Created("", new LivroViewModel
             {
@@ -83,6 +85,50 @@ public class LivroController : ControllerBase
         });
 
         return Ok(livrosViewModel);
+    }
+
+    /// <summary>
+    /// Lista autores de um livro
+    /// </summary>
+    /// <response code="200">Lista de autores do livro</response>
+    [HttpGet]
+    [Route("{livroId}/autores")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AutorViewModel>>> ListarAutoresDoLivro(
+        [Range(1, int.MaxValue, ErrorMessage = "O identificador precisa ser maior que zero")]
+        int livroId)
+    {
+        var autores = await _manutencaoLivroAppService.ObterAutoresDoLivroAsync(livroId);
+
+        var autoresViewModel = autores.Select(a => new AutorViewModel
+        {
+            Codigo = a.AutorId,
+            Nome = a.Nome
+        });
+
+        return Ok(autoresViewModel);
+    }
+
+    /// <summary>
+    /// Lista assuntos de um livro
+    /// </summary>
+    /// <response code="200">Lista de assuntos do livro</response>
+    [HttpGet]
+    [Route("{livroId}/assuntos")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<AssuntoViewModel>>> ListarAssuntosDoLivro(
+        [Range(1, int.MaxValue, ErrorMessage = "O identificador precisa ser maior que zero")]
+        int livroId)
+    {
+        var assuntos = await _manutencaoLivroAppService.ObterAssuntosDoLivroAsync(livroId);
+
+        var assuntosViewModel = assuntos.Select(a => new AssuntoViewModel
+        {
+            Codigo = a.AssuntoId,
+            Descricao = a.Descricao
+        });
+
+        return Ok(assuntosViewModel);
     }
 
     /// <summary>
@@ -138,7 +184,9 @@ public class LivroController : ControllerBase
                 Editora = model.Editora.Trim(),
                 Edicao = model.Edicao,
                 AnoPublicacao = model.AnoPublicacao
-            });
+            },
+            model.Autores?.Select(s => s.Codigo),
+            model.Assuntos?.Select(s => s.Codigo));
 
             return Ok(new LivroViewModel
             {
