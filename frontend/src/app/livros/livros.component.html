@@ -105,64 +105,150 @@
     </h1>
   </div>
 
-  <div class="modal modal-sheet position-static d-block p-2">
-    <div class="modal-dialog">
-      <div class="modal-content rounded-4 shadow">
-        <div class="modal-header p-5 pb-4 border-bottom-0">
-        </div>
-
-        <div class="modal-body p-5 pt-0">
-          <div class="mb-3" *ngIf="selecionado.codigo">
-            <span class="badge text-bg-info">ID: #{{ selecionado.codigo }}</span>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-3" id="fieldTitulo" [(ngModel)]="selecionado.titulo"
-              [readonly]="carregando">
-            <label for="fieldTitulo">Título</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-3" id="fieldEditora" [(ngModel)]="selecionado.editora"
-              [readonly]="carregando">
-            <label for="fieldEditora">Editora</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-3" id="fieldEdicao" [(ngModel)]="selecionado.edicao"
-              [readonly]="carregando">
-            <label for="fieldEdicao">Edição</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-3" id="fieldAnoPublicacao" [(ngModel)]="selecionado.anoPublicacao"
-              [readonly]="carregando">
-            <label for="fieldAnoPublicacao">Ano de publicação</label>
-          </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <button (click)="confirmaCadastroSelecionado()" [disabled]="carregando"
-              class=" mb-2 btn btn-lg rounded-3 btn-primary">
-              <span *ngIf="!carregando">
-                <i class="bi bi-save"></i>
-                <strong> Salvar</strong>
-              </span>
-              <span *ngIf="carregando">
-                <span class="spinner-border spinner-border-sm"></span>
-                <span> Salvando...</span>
-              </span>
-            </button>
-            <button (click)="cancelarSelecao()" [disabled]="carregando" class="mb-2 btn btn-lg rounded-3 btn-secondary">
-              <i class="bi bi-x"></i>
-              Cancelar
-            </button>
-          </div>
-          <hr class="my-4">
-          <div *ngIf="errosServidor.length">
-            @for (erro of errosServidor; track $index) {
-            <div class="alert alert-danger d-flex align-items-center" role="alert">
-              <i class="bi bi-exclamation-triangle-fill">&nbsp;</i>
-              {{ erro }}
+  <div class="row row-cols-1 row-cols-lg-2 mb-3 text-center">
+    <!-- Coluna A -->
+    <div class="col">
+      <div class="modal modal-sheet position-static d-block p-2">
+        <div class="modal-dialog">
+          <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
             </div>
-            }
+
+            <div class="modal-body p-5 pt-0">
+              <div class="mb-3" *ngIf="selecionado.codigo">
+                <span class="badge text-bg-info">ID: #{{ selecionado.codigo }}</span>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" id="fieldTitulo" [(ngModel)]="selecionado.titulo"
+                  [readonly]="carregando">
+                <label for="fieldTitulo">Título</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" id="fieldEditora" [(ngModel)]="selecionado.editora"
+                  [readonly]="carregando">
+                <label for="fieldEditora">Editora</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" id="fieldEdicao" [(ngModel)]="selecionado.edicao"
+                  [readonly]="carregando">
+                <label for="fieldEdicao">Edição</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" id="fieldAnoPublicacao"
+                  [(ngModel)]="selecionado.anoPublicacao" [readonly]="carregando">
+                <label for="fieldAnoPublicacao">Ano de publicação</label>
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <button (click)="confirmaCadastroSelecionado()" [disabled]="carregando"
+                  class=" mb-2 btn btn-lg rounded-3 btn-primary">
+                  <span *ngIf="!carregando">
+                    <i class="bi bi-save"></i>
+                    <strong> Salvar</strong>
+                  </span>
+                  <span *ngIf="carregando">
+                    <span class="spinner-border spinner-border-sm"></span>
+                    <span> Salvando...</span>
+                  </span>
+                </button>
+                <button (click)="cancelarSelecao()" [disabled]="carregando"
+                  class="mb-2 btn btn-lg rounded-3 btn-secondary">
+                  <i class="bi bi-x"></i>
+                  Cancelar
+                </button>
+              </div>
+              <hr class="my-4">
+              <div *ngIf="errosServidor.length">
+                @for (erro of errosServidor; track $index) {
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                  <i class="bi bi-exclamation-triangle-fill">&nbsp;</i>
+                  {{ erro }}
+                </div>
+                }
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Coluna B -->
+    <div class="col">
+      <div class="mt-5">
+        <h4>Autores</h4>
+        <ul class="list-group">
+          @if(!selecionado.autores?.length)
+          {
+          <li class="list-group-item list-group-item-warning">
+            O livro não tem autor(es) ainda!
+          </li>
+          }@else{
+          @for(autorDoLivro of selecionado.autores; track autorDoLivro.codigo){
+          <li class="list-group-item d-flex justify-content-between">
+            {{ autorDoLivro.nome }}
+            <button (click)="removerAutorDaSelecao(autorDoLivro)" class="btn btn-sm btn-danger ">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </li>
+          }
+          }
+          <li *ngIf="incluindoAutor" class="list-group-item">
+            <div class="d-flex align-items-justify">
+              <select [(ngModel)]="autorSelecionadoParaIncluir" class="form-select" (change)="incluirAutor()">
+                <option *ngFor="let obj of obterAutoresParaIncluir()" [ngValue]="obj">
+                  {{ obj.nome }}
+                </option>
+              </select>
+              <button (click)="incluindoAutor=false" class="btn btn-sm ms-2 btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          </li>
+          <li *ngIf="!incluindoAutor && obterAutoresParaIncluir().length" class="list-group-item">
+            <button (click)="incluindoAutor=true" class="btn btn-outline-info">
+              <i class="bi bi-plus-lg"></i> Incluir autor
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-5">
+        <h4>Assuntos</h4>
+        <ul class="list-group">
+          @if(!selecionado.assuntos?.length)
+          {
+          <li class="list-group-item list-group-item-warning">
+            O livro não tem assunto(s) ainda!
+          </li>
+          }@else{
+          @for(assuntoDoLivro of selecionado.assuntos; track assuntoDoLivro.codigo){
+          <li class="list-group-item d-flex justify-content-between">
+            {{ assuntoDoLivro.descricao }}
+            <button (click)="removerAssuntoDaSelecao(assuntoDoLivro)" class="btn btn-sm btn-danger ">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </li>
+          }
+          }
+          <li *ngIf="incluindoAssunto" class="list-group-item">
+            <div class="d-flex align-items-justify">
+              <select [(ngModel)]="assuntoSelecionadoParaIncluir" class="form-select" (change)="incluirAssunto()">
+                <option *ngFor="let obj of obterAssuntosParaIncluir()" [ngValue]="obj">
+                  {{ obj.descricao }}
+                </option>
+              </select>
+              <button (click)="incluindoAssunto=false" class="btn btn-sm ms-2 btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          </li>
+          <li *ngIf="!incluindoAssunto && obterAssuntosParaIncluir().length" class="list-group-item">
+            <button (click)="incluindoAssunto=true" class="btn btn-outline-info">
+              <i class="bi bi-plus-lg"></i> Incluir assunto
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
+
 </div>
