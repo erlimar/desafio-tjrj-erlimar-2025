@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
+/// <summary>
+/// Serviço de aplicação para manutenção de autores
+/// </summary>
 public class ManutencaoAutorAppService
 {
     private readonly IManutencaoAutorAppRepository _repository;
@@ -64,9 +67,9 @@ public class ManutencaoAutorAppService
     /// <summary>
     /// Atualiza dados do autor
     /// </summary>
-    /// <param name="autor"></param>
+    /// <param name="autor">Dados do autor a atualizar</param>
     /// <returns>Instância do <see cref="Autor"/> com os dados atualizados</returns>
-    /// <exception cref="AutorRepetidoException">Quando o novo nome do autor já estiver cadastrado</exception>
+    /// <exception cref="RegistroRepetidoException">Quando o novo nome do autor já estiver cadastrado</exception>
     public async Task<Autor> AtualizarAutorAsync(Autor autor)
     {
         _ = autor ?? throw new ArgumentNullException(nameof(autor));

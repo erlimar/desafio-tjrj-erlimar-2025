@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoAssunto;
 
+/// <summary>
+/// Serviço de aplicação para manutenção de assuntos
+/// </summary>
 public class ManutencaoAssuntoAppService
 {
     private readonly IManutencaoAssuntoAppRepository _repository;
@@ -28,8 +31,6 @@ public class ManutencaoAssuntoAppService
         {
             throw new RegistroRepetidoException($"Assunto com descrição '{assunto.Descricao}' já existe");
         }
-
-        // TODO: Validar retorno do repositório e tratar situações inesperadas de banco
 
         return await _repository.CadastraNovoAssuntoAsync(assunto);
     }

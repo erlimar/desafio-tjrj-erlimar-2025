@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
+/// <summary>
+/// Repositório para manutenção da persistência de autores
+/// </summary>
 public interface IManutencaoAutorAppRepository
 {
     /// <summary>

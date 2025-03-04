@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoAssunto;
 
+/// <summary>
+/// Repositório para manutenção da persistência de assuntos
+/// </summary>
 public interface IManutencaoAssuntoAppRepository
 {
     /// <summary>
