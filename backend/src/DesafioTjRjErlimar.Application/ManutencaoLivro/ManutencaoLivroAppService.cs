@@ -72,6 +72,11 @@ public class ManutencaoLivroAppService
     {
         _ = livro ?? throw new ArgumentNullException(nameof(livro));
 
+        if (!await _repository.ExisteLivroComIdAsync(livro.LivroId))
+        {
+            throw new RegistroInexistenteException($"Livro com identificador {livro.LivroId} não existe para ser atualizado");
+        }
+
         if (await _repository.ExisteLivroComTituloExcetoIdAsync(livro.Titulo, livro.LivroId))
         {
             throw new RegistroRepetidoException($"Já existe um livro com o novo título '{livro.Titulo}' pretendido");

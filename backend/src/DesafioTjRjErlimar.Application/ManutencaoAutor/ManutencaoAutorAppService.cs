@@ -74,6 +74,11 @@ public class ManutencaoAutorAppService
     {
         _ = autor ?? throw new ArgumentNullException(nameof(autor));
 
+        if (!await _repository.ExisteAutorComIdAsync(autor.AutorId))
+        {
+            throw new RegistroInexistenteException($"Autor com identificador {autor.AutorId} não existe para ser atualizado");
+        }
+
         if (await _repository.ExisteAutorComNomeExcetoIdAsync(autor.Nome, autor.AutorId))
         {
             throw new RegistroRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");

@@ -72,6 +72,11 @@ public class ManutencaoAssuntoAppService
     {
         _ = assunto ?? throw new ArgumentNullException(nameof(assunto));
 
+        if (!await _repository.ExisteAssuntoComIdAsync(assunto.AssuntoId))
+        {
+            throw new RegistroInexistenteException($"Assunto com identificador {assunto.AssuntoId} não existe para ser atualizado");
+        }
+
         if (await _repository.ExisteAssuntoComDescricaoExcetoIdAsync(assunto.Descricao, assunto.AssuntoId))
         {
             throw new RegistroRepetidoException($"Já existe um assunto com a nova descrição '{assunto.Descricao}' pretendida");

@@ -12,12 +12,12 @@ namespace DesafioTjRjErlimar.WebApi.Controllers;
 [Route("autores")]
 public class AutorController : ControllerBase
 {
-    private readonly ManutencaoAutorAppService _manutencaoLivroAppService;
+    private readonly ManutencaoAutorAppService _manutencaoAutorAppService;
 
-    public AutorController(ManutencaoAutorAppService manutencaoLivroAppService)
+    public AutorController(ManutencaoAutorAppService manutencaoAutorAppService)
     {
-        _manutencaoLivroAppService = manutencaoLivroAppService
-            ?? throw new ArgumentNullException(nameof(manutencaoLivroAppService));
+        _manutencaoAutorAppService = manutencaoAutorAppService
+            ?? throw new ArgumentNullException(nameof(manutencaoAutorAppService));
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class AutorController : ControllerBase
 
         try
         {
-            var autorCadastrado = await _manutencaoLivroAppService.AdicionarAutorAsync(new Autor
+            var autorCadastrado = await _manutencaoAutorAppService.AdicionarAutorAsync(new Autor
             {
                 Nome = model.Nome.Trim()
             });
@@ -76,7 +76,7 @@ public class AutorController : ControllerBase
 
         try
         {
-            var autorAtualizado = await _manutencaoLivroAppService.AtualizarAutorAsync(new Autor
+            var autorAtualizado = await _manutencaoAutorAppService.AtualizarAutorAsync(new Autor
             {
                 AutorId = autorId,
                 Nome = model.Nome.Trim()
@@ -94,6 +94,11 @@ public class AutorController : ControllerBase
 
             return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível atualizar o autor");
         }
+        catch (RegistroInexistenteException ex)
+        {
+            ModelState.AddModelError(nameof(autorId), ex.Message);
+            return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível atualizar o autor");
+        }
     }
 
     /// <summary>
@@ -104,7 +109,7 @@ public class AutorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<AutorViewModel>>> ListarAutores()
     {
-        var autores = await _manutencaoLivroAppService.ObterAutoresAsync();
+        var autores = await _manutencaoAutorAppService.ObterAutoresAsync();
 
         var autoresViewModel = autores.Select(a => new AutorViewModel
         {
@@ -128,11 +133,11 @@ public class AutorController : ControllerBase
     {
         try
         {
-            await _manutencaoLivroAppService.RemoverAutorPorIdAsync(autorId);
+            await _manutencaoAutorAppService.RemoverAutorPorIdAsync(autorId);
         }
         catch (RegistroInexistenteException ex)
         {
-            ModelState.AddModelError("autorId", ex.Message);
+            ModelState.AddModelError(nameof(autorId), ex.Message);
 
             return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível remover o autor");
         }

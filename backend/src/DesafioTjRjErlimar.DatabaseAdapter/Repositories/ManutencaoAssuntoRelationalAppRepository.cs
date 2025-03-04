@@ -1,5 +1,4 @@
 using DesafioTjRjErlimar.Application.ManutencaoAssunto;
-using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +59,7 @@ public class ManutencaoAssuntoRelationalAppRepository : IManutencaoAssuntoAppRep
     /// Verifica se já existe um assunto com descrição informada, exceto o identificador informado
     /// </summary>
     /// <param name="descricao">Descrição do <see cref="Assunto"/></param>
+    /// <param name="idExcecao">Identificador a desconsiderar na comparação</param>
     public async Task<bool> ExisteAssuntoComDescricaoExcetoIdAsync(string descricao, int idExcecao)
     {
         return await _context.Set<Assunto>().AnyAsync(a => a.Descricao.Equals(descricao) && a.AssuntoId != idExcecao);

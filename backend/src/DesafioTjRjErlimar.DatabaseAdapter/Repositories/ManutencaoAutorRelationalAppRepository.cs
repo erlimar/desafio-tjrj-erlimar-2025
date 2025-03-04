@@ -1,4 +1,3 @@
-
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
 using Microsoft.EntityFrameworkCore;
@@ -85,6 +84,7 @@ public class ManutencaoAutorRelationalAppRepository : IManutencaoAutorAppReposit
     /// Verifica se já existe um autor com nome informado, exceto o identificador informado
     /// </summary>
     /// <param name="nome">Nome do <see cref="Autor"/></param>
+    /// <param name="idExcecao">Identificador a desconsiderar na comparação</param>
     public async Task<bool> ExisteAutorComNomeExcetoIdAsync(string nome, int idExcecao)
     {
         return await _context.Set<Autor>().AnyAsync(a => a.Nome.Equals(nome) && a.AutorId != idExcecao);

@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 using DesafioTjRjErlimar.Application;
 using DesafioTjRjErlimar.Application.ManutencaoAssunto;
-using DesafioTjRjErlimar.Application.ManutencaoAutor;
 using DesafioTjRjErlimar.WebApi.Model;
 
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +94,11 @@ public class AssuntoController : ControllerBase
 
             return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível atualizar o assunto");
         }
+        catch (RegistroInexistenteException ex)
+        {
+            ModelState.AddModelError(nameof(assuntoId), ex.Message);
+            return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível atualizar o assunto");
+        }
     }
 
     /// <summary>
@@ -133,7 +137,7 @@ public class AssuntoController : ControllerBase
         }
         catch (RegistroInexistenteException ex)
         {
-            ModelState.AddModelError("assuntoId", ex.Message);
+            ModelState.AddModelError(nameof(assuntoId), ex.Message);
 
             return ValidationProblem(modelStateDictionary: ModelState, title: "Não foi possível remover o assunto");
         }
