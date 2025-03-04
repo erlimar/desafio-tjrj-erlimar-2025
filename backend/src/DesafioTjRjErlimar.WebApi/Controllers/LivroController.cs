@@ -45,8 +45,8 @@ public class LivroController : ControllerBase
                 Edicao = model.Edicao,
                 AnoPublicacao = model.AnoPublicacao
             },
-            model.Autores.Select(s => s.Codigo),
-            model.Assuntos.Select(s => s.Codigo));
+            model.Autores?.Select(s => s.Codigo),
+            model.Assuntos?.Select(s => s.Codigo));
 
             return Created("", new LivroViewModel
             {

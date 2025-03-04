@@ -28,10 +28,10 @@ public class DadosLivroViewModel
     /// <summary>
     /// Autores do livro
     /// </summary>
-    public IEnumerable<CodigoViewModel> Autores { get; set; }
+    public IEnumerable<CodigoViewModel>? Autores { get; set; }
 
     /// <summary>
     /// Assuntos do livro
     /// </summary>
-    public IEnumerable<CodigoViewModel> Assuntos { get; set; }
+    public IEnumerable<CodigoViewModel>? Assuntos { get; set; }
 }
