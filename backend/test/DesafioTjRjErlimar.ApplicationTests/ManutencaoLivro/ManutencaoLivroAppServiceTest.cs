@@ -220,6 +220,7 @@ public class ManutencaoLivroAppServiceTest
     {
         var mock = new Mock<IManutencaoLivroAppRepository>();
 
+        mock.Setup(m => m.ExisteLivroComIdAsync(33)).ReturnsAsync(true);
         mock.Setup(m => m.ExisteLivroComTituloExcetoIdAsync("Título já existente", 33)).ReturnsAsync(true);
 
         var service = new ManutencaoLivroAppService(mock.Object);
@@ -235,7 +236,31 @@ public class ManutencaoLivroAppServiceTest
 
         Assert.Equal("Já existe um livro com o novo título 'Título já existente' pretendido", exception.Message);
 
+        mock.Verify(m => m.ExisteLivroComIdAsync(33), Times.Once);
         mock.Verify(m => m.ExisteLivroComTituloExcetoIdAsync("Título já existente", 33), Times.Once);
+    }
+
+    [Fact(DisplayName = "Não se pode atualizar um livro não cadastrado")]
+    public async Task NaoSePodeAtualizarUmLivroNaoCadastrado()
+    {
+        var mock = new Mock<IManutencaoLivroAppRepository>();
+
+        mock.Setup(m => m.ExisteLivroComIdAsync(20)).ReturnsAsync(false);
+
+        var service = new ManutencaoLivroAppService(mock.Object);
+
+        var exception = await Assert.ThrowsAsync<RegistroInexistenteException>(
+            () => _ = service.AtualizarLivroAsync(new Livro
+            {
+                LivroId = 20,
+                Titulo = "Título Ok",
+                Editora = "Editora 1",
+            })
+        );
+
+        Assert.Equal("Livro com identificador 20 não existe para ser atualizado", exception.Message);
+
+        mock.Verify(m => m.ExisteLivroComIdAsync(20), Times.Once);
     }
 
     [Fact(DisplayName = "Se pode atualizar um livro com título não utilizado")]
@@ -243,6 +268,7 @@ public class ManutencaoLivroAppServiceTest
     {
         var mock = new Mock<IManutencaoLivroAppRepository>();
 
+        mock.Setup(m => m.ExisteLivroComIdAsync(90)).ReturnsAsync(true);
         mock.Setup(m => m.ExisteLivroComTituloExcetoIdAsync("Título não existente", 90)).ReturnsAsync(false);
         mock.Setup(m => m.AtualizarLivroAsync(It.IsAny<Livro>()))
             .ReturnsAsync(new Livro
@@ -263,6 +289,7 @@ public class ManutencaoLivroAppServiceTest
 
         Assert.NotNull(livroAtualizado);
 
+        mock.Verify(m => m.ExisteLivroComIdAsync(90), Times.Once);
         mock.Verify(m => m.ExisteLivroComTituloExcetoIdAsync("Título não existente", 90), Times.Once);
         mock.Verify(m => m.AtualizarLivroAsync(It.IsAny<Livro>()), Times.Once);
     }

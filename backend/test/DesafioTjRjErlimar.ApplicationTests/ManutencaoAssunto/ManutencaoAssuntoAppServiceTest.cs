@@ -214,6 +214,7 @@ public class ManutencaoAssuntoAppServiceTest
     {
         var mock = new Mock<IManutencaoAssuntoAppRepository>();
 
+        mock.Setup(m => m.ExisteAssuntoComIdAsync(200)).ReturnsAsync(true);
         mock.Setup(m => m.ExisteAssuntoComDescricaoExcetoIdAsync("Descrição já existente", 200)).ReturnsAsync(true);
 
         var service = new ManutencaoAssuntoAppService(mock.Object);
@@ -228,7 +229,30 @@ public class ManutencaoAssuntoAppServiceTest
 
         Assert.Equal("Já existe um assunto com a nova descrição 'Descrição já existente' pretendida", exception.Message);
 
+        mock.Verify(m => m.ExisteAssuntoComIdAsync(200), Times.Once);
         mock.Verify(m => m.ExisteAssuntoComDescricaoExcetoIdAsync("Descrição já existente", 200), Times.Once);
+    }
+
+    [Fact(DisplayName = "Não se pode atualizar um assunto não cadastrado")]
+    public async Task NaoSePodeAtualizarUmAssuntoNaoCadastrado()
+    {
+        var mock = new Mock<IManutencaoAssuntoAppRepository>();
+
+        mock.Setup(m => m.ExisteAssuntoComIdAsync(70)).ReturnsAsync(false);
+
+        var service = new ManutencaoAssuntoAppService(mock.Object);
+
+        var exception = await Assert.ThrowsAsync<RegistroInexistenteException>(
+            () => _ = service.AtualizarAssuntoAsync(new Assunto
+            {
+                AssuntoId = 70,
+                Descricao = "Descrição Ok"
+            })
+        );
+
+        Assert.Equal("Assunto com identificador 70 não existe para ser atualizado", exception.Message);
+
+        mock.Verify(m => m.ExisteAssuntoComIdAsync(70), Times.Once);
     }
 
     [Fact(DisplayName = "Se pode atualizar um assunto com descrição não utilizada")]
@@ -236,6 +260,7 @@ public class ManutencaoAssuntoAppServiceTest
     {
         var mock = new Mock<IManutencaoAssuntoAppRepository>();
 
+        mock.Setup(m => m.ExisteAssuntoComIdAsync(23)).ReturnsAsync(true);
         mock.Setup(m => m.ExisteAssuntoComDescricaoExcetoIdAsync("Descrição não existente", 23)).ReturnsAsync(false);
         mock.Setup(m => m.AtualizarAssuntoAsync(It.IsAny<Assunto>()))
             .ReturnsAsync(new Assunto
@@ -254,6 +279,7 @@ public class ManutencaoAssuntoAppServiceTest
 
         Assert.NotNull(assuntoAtualizado);
 
+        mock.Verify(m => m.ExisteAssuntoComIdAsync(23), Times.Once);
         mock.Verify(m => m.ExisteAssuntoComDescricaoExcetoIdAsync("Descrição não existente", 23), Times.Once);
         mock.Verify(m => m.AtualizarAssuntoAsync(It.IsAny<Assunto>()), Times.Once);
     }
