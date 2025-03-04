@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AutoresService {
-
   apiUrlBase = 'https://localhost:7207';
 
   constructor(private http: HttpClient) { }
