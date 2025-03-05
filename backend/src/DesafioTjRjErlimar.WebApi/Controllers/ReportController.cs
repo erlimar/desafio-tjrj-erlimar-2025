@@ -1,4 +1,6 @@
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
+using DesafioTjRjErlimar.Application.ManutencaoLivro;
 
 using FastReport.Export.PdfSimple;
 
@@ -11,11 +13,24 @@ namespace DesafioTjRjErlimar.WebApi.Controllers;
 public class ReportController : ControllerBase
 {
     private readonly ManutencaoAutorAppService _manutencaoAutorAppService;
+    private readonly ManutencaoAssuntoAppService _manutencaoAssuntoAppService;
+    private readonly IManutencaoLivroAppRepository _manutencaoLivroAppRepository;
+    private readonly TimeProvider _timeProvider;
 
-    public ReportController(ManutencaoAutorAppService manutencaoAutorAppService)
+    public ReportController(
+        ManutencaoAutorAppService manutencaoAutorAppService,
+        ManutencaoAssuntoAppService manutencaoAssuntoAppService,
+        ManutencaoLivroAppService manutencaoLivroAppService,
+        IManutencaoLivroAppRepository manutencaoLivroAppRepository,
+        TimeProvider timeProvider)
     {
         _manutencaoAutorAppService = manutencaoAutorAppService
             ?? throw new ArgumentNullException(nameof(manutencaoAutorAppService));
+        _manutencaoAssuntoAppService = manutencaoAssuntoAppService
+            ?? throw new ArgumentNullException(nameof(manutencaoAssuntoAppService));
+        _manutencaoLivroAppRepository = manutencaoLivroAppRepository
+            ?? throw new ArgumentNullException(nameof(manutencaoLivroAppRepository));
+        _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
     [HttpGet]
@@ -40,28 +55,62 @@ public class ReportController : ControllerBase
 
         ms.Seek(0, SeekOrigin.Begin);
 
-        return File(ms, "application/odf", "Autores.pdf", enableRangeProcessing);
+        var nomeArquivo = $"relatorio-autores_{_timeProvider.GetUtcNow():yyyy-MM-ddTHH-mm-ss}.pdf";
+
+        return File(ms, "application/odf", nomeArquivo, enableRangeProcessing);
     }
 
-    // [HttpPost]
-    // public ActionResult CriarRelatorioModelo()
-    // {
-    //     var path = AppDomain.CurrentDomain.BaseDirectory;
-    //     var reportPath = Path.Combine(path, "Reports", "Modelo.frx");
+    [HttpGet]
+    [Route("assuntos")]
+    public async Task<ActionResult> GerarRelatorioAssuntos()
+    {
+        var reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reports", "CadastroAssuntos.frx");
+        var reportData = await _manutencaoAssuntoAppService.ObterAssuntosAsync();
+        var report = new FastReport.Report();
 
-    //     var data = GetItems();
+        report.Report.Load(reportPath);
+        report.Dictionary.RegisterBusinessObject(reportData.ToList(), "ReportDataSurce", 10, true);
+        report.Prepare();
 
-    //     var report = new FastReport.Report();
+        var pdfExport = new PDFSimpleExport();
 
-    //     report.Dictionary.RegisterBusinessObject(data, "ReportDataSurce", 10, true);
-    //     report.Report.Save(reportPath);
+        MemoryStream ms = new();
 
-    //     return Ok(reportPath);
-    // }
-}
+        pdfExport.Export(report, ms);
 
-public class AutorReportItem
-{
-    public int CodAutor { get; set; }
-    public string? Nome { get; set; }
+        var enableRangeProcessing = true;
+
+        ms.Seek(0, SeekOrigin.Begin);
+
+        var nomeArquivo = $"relatorio-assuntos_{_timeProvider.GetUtcNow():yyyy-MM-ddTHH-mm-ss}.pdf";
+
+        return File(ms, "application/odf", nomeArquivo, enableRangeProcessing);
+    }
+
+    [HttpGet]
+    [Route("consolidado")]
+    public async Task<ActionResult> GerarRelatorioModelo()
+    {
+        var reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reports", "RelatorioConsolidadoPorAutor.frx");
+        var reportData = await _manutencaoLivroAppRepository.ObterDadosDeLivrosParaRelatorioConsolidado();
+        var report = new FastReport.Report();
+
+        report.Report.Load(reportPath);
+        report.Dictionary.RegisterBusinessObject(reportData.ToList(), "RelatorioConsolidadoPorAutor", 10, true);
+        report.Prepare();
+
+        var pdfExport = new PDFSimpleExport();
+
+        MemoryStream ms = new();
+
+        pdfExport.Export(report, ms);
+
+        var enableRangeProcessing = true;
+
+        ms.Seek(0, SeekOrigin.Begin);
+
+        var nomeArquivo = $"relatorio-consolidado_{_timeProvider.GetUtcNow():yyyy-MM-ddTHH-mm-ss}.pdf";
+
+        return File(ms, "application/odf", nomeArquivo, enableRangeProcessing);
+    }
 }

@@ -21,7 +21,7 @@ public class DadosAutorViewModel : IValidatableObject
 
         if (nome?.Length < 3)
         {
-            yield return new ValidationResult("O nome deve ter no mínimo 3 caracteres (espaços não contam)", new[] { nameof(Nome) });
+            yield return new ValidationResult("O nome deve ter no mínimo 3 caracteres (espaços não contam)", [nameof(Nome)]);
         }
     }
 }

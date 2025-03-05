@@ -1,6 +1,7 @@
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
 
-namespace DesafioTjRjErlimar.Application;
+namespace DesafioTjRjErlimar.Application.ManutencaoLivro;
 
 /// <summary>
 /// Representa um livro

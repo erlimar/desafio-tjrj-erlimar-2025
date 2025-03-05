@@ -6,6 +6,9 @@ on:
       - 'main'
     paths:
       - 'backend/**'
+  pull_request:
+    branches:
+      - 'main'
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true

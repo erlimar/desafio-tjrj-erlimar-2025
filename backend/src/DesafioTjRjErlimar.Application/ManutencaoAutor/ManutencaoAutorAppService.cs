@@ -1,5 +1,8 @@
 namespace DesafioTjRjErlimar.Application.ManutencaoAutor;
 
+/// <summary>
+/// Serviço de aplicação para manutenção de autores
+/// </summary>
 public class ManutencaoAutorAppService
 {
     private readonly IManutencaoAutorAppRepository _repository;
@@ -21,12 +24,12 @@ public class ManutencaoAutorAppService
 
         if (await _repository.ExisteAutorComIdAsync(autor.AutorId))
         {
-            throw new AutorRepetidoException($"Autor com identificador {autor.AutorId} já existe");
+            throw new RegistroRepetidoException($"Autor com identificador {autor.AutorId} já existe");
         }
 
         if (await _repository.ExisteAutorComNomeAsync(autor.Nome))
         {
-            throw new AutorRepetidoException($"Autor com nome '{autor.Nome}' já existe");
+            throw new RegistroRepetidoException($"Autor com nome '{autor.Nome}' já existe");
         }
 
         // TODO: Validar retorno do repositório e tratar situações inesperadas de banco
@@ -64,16 +67,21 @@ public class ManutencaoAutorAppService
     /// <summary>
     /// Atualiza dados do autor
     /// </summary>
-    /// <param name="autor"></param>
+    /// <param name="autor">Dados do autor a atualizar</param>
     /// <returns>Instância do <see cref="Autor"/> com os dados atualizados</returns>
-    /// <exception cref="AutorRepetidoException">Quando o novo nome do autor já estiver cadastrado</exception>
+    /// <exception cref="RegistroRepetidoException">Quando o novo nome do autor já estiver cadastrado</exception>
     public async Task<Autor> AtualizarAutorAsync(Autor autor)
     {
         _ = autor ?? throw new ArgumentNullException(nameof(autor));
 
+        if (!await _repository.ExisteAutorComIdAsync(autor.AutorId))
+        {
+            throw new RegistroInexistenteException($"Autor com identificador {autor.AutorId} não existe para ser atualizado");
+        }
+
         if (await _repository.ExisteAutorComNomeExcetoIdAsync(autor.Nome, autor.AutorId))
         {
-            throw new AutorRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");
+            throw new RegistroRepetidoException($"Já existe um autor com o novo nome '{autor.Nome}' pretendido");
         }
 
         return await _repository.AtualizarAutorAsync(autor);

@@ -6,7 +6,7 @@
       <button (click)="incluirNovoAutor()" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Novo autor
       </button>
-      <a [href]="webapi.obterUrlRelatorioAutores()" target="_blank" class="btn btn-outline-primary m-2">
+      <a [href]="autoresService.obterUrlRelatorioAutores()" target="_blank" class="btn btn-outline-primary m-2">
         <i class="bi bi-file-earmark-bar-graph"></i> Emitir relatório
       </a>
     </h1>

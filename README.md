@@ -8,7 +8,7 @@ cujo objetivo é criar um projeto utilizando as boas práticas de mercado e apre
 mesmo demonstrando o passo a passo de sua criação (base de dados, tecnologias, aplicação,
 metodologias, frameworks, etc).
 
-![](printscreen.png)
+![](printscreen-20250304.png)
 
 - **frontend** - diretório com projeto _front-end_ em [Angular][ANGULAR]
 - **backend** - diretório com projeto _back-end_ em [ASP.NET Core][ASPNETCORE]

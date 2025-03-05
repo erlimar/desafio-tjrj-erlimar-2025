@@ -1,4 +1,6 @@
+using DesafioTjRjErlimar.Application.ManutencaoAssunto;
 using DesafioTjRjErlimar.Application.ManutencaoAutor;
+using DesafioTjRjErlimar.Application.ManutencaoLivro;
 using DesafioTjRjErlimar.DatabaseAdapter;
 using DesafioTjRjErlimar.DatabaseAdapter.Repositories;
 
@@ -41,8 +43,13 @@ public class Program
 
         #region Configurações de serviços de aplicação
         builder.Services
+            .AddSingleton(TimeProvider.System)
             .AddScoped<IManutencaoAutorAppRepository, ManutencaoAutorRelationalAppRepository>()
-            .AddScoped<ManutencaoAutorAppService>();
+            .AddScoped<IManutencaoAssuntoAppRepository, ManutencaoAssuntoRelationalAppRepository>()
+            .AddScoped<IManutencaoLivroAppRepository, ManutencaoLivroRelationalAppRepository>()
+            .AddScoped<ManutencaoAutorAppService>()
+            .AddScoped<ManutencaoAssuntoAppService>()
+            .AddScoped<ManutencaoLivroAppService>();
         #endregion
 
         var app = builder.Build();

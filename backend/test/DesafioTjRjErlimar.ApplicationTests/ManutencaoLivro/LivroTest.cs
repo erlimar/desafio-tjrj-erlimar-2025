@@ -1,6 +1,6 @@
-using DesafioTjRjErlimar.Application;
+using DesafioTjRjErlimar.Application.ManutencaoLivro;
 
-namespace DesafioTjRjErlimar.ApplicationTests;
+namespace DesafioTjRjErlimar.ApplicationTests.ManutencaoLivro;
 
 [Trait("target", nameof(Livro))]
 public class LivroTest

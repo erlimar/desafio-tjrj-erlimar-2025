@@ -3,9 +3,12 @@ name: CI - FrontEnd
 on:
   push:
     branches:
-      - 'main'
+      - "main"
     paths:
-      - 'frontend/**'
+      - "frontend/**"
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
   build:
@@ -21,8 +24,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
           cache-dependency-path: ./frontend/package-lock.json
 
       - name: Restore
@@ -33,6 +36,6 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
-      # - name: Test
-      #   run: npm run test:ci
-      #   working-directory: ./frontend
+      - name: Test
+        run: npm run test:ci
+        working-directory: ./frontend
