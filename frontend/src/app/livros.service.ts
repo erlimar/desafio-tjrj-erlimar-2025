@@ -13,8 +13,8 @@ export class LivrosService {
 
   constructor(private http: HttpClient) { }
 
-  obterUrlRelatorioLivros() {
-    return `${this.apiUrlBase}/relatorios/livros`
+  obterUrlRelatorioConsolidado() {
+    return `${this.apiUrlBase}/relatorios/consolidado`
   }
 
   obterTodosLivros(): Observable<Livro[]> {

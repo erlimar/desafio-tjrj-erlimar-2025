@@ -194,4 +194,16 @@ public class ManutencaoLivroRelationalAppRepository : IManutencaoLivroAppReposit
             .Where(w => w.LivroId == livroId)
             .ExecuteDeleteAsync();
     }
+
+    /// <summary>
+    /// Obter dados de livros para relatório consolidado
+    /// </summary>
+    public async Task<IEnumerable<RelatorioConsolidadoPorAutorModel>> ObterDadosDeLivrosParaRelatorioConsolidado()
+    {
+        var resultado = await _context.Database.SqlQuery<RelatorioConsolidadoPorAutorModel>(
+            $"SELECT * FROM RelatorioConsolidadoPorAutor ORDER BY AutorPrincipalNome")
+           .ToListAsync();
+
+        return resultado;
+    }
 }

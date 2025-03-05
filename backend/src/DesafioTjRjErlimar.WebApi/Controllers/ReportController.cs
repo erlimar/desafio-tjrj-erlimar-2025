@@ -14,21 +14,22 @@ public class ReportController : ControllerBase
 {
     private readonly ManutencaoAutorAppService _manutencaoAutorAppService;
     private readonly ManutencaoAssuntoAppService _manutencaoAssuntoAppService;
-    private readonly ManutencaoLivroAppService _manutencaoLivroAppService;
+    private readonly IManutencaoLivroAppRepository _manutencaoLivroAppRepository;
     private readonly TimeProvider _timeProvider;
 
     public ReportController(
         ManutencaoAutorAppService manutencaoAutorAppService,
         ManutencaoAssuntoAppService manutencaoAssuntoAppService,
         ManutencaoLivroAppService manutencaoLivroAppService,
+        IManutencaoLivroAppRepository manutencaoLivroAppRepository,
         TimeProvider timeProvider)
     {
         _manutencaoAutorAppService = manutencaoAutorAppService
             ?? throw new ArgumentNullException(nameof(manutencaoAutorAppService));
         _manutencaoAssuntoAppService = manutencaoAssuntoAppService
             ?? throw new ArgumentNullException(nameof(manutencaoAssuntoAppService));
-        _manutencaoLivroAppService = manutencaoLivroAppService
-            ?? throw new ArgumentNullException(nameof(ManutencaoLivroAppService));
+        _manutencaoLivroAppRepository = manutencaoLivroAppRepository
+            ?? throw new ArgumentNullException(nameof(manutencaoLivroAppRepository));
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
@@ -87,15 +88,15 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet]
-    [Route("livros")]
-    public async Task<ActionResult> GerarRelatorioLivros()
+    [Route("consolidado")]
+    public async Task<ActionResult> GerarRelatorioModelo()
     {
-        var reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reports", "CadastroLivros.frx");
-        var reportData = await _manutencaoLivroAppService.ObterLivrosAsync();
+        var reportPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reports", "RelatorioConsolidadoPorAutor.frx");
+        var reportData = await _manutencaoLivroAppRepository.ObterDadosDeLivrosParaRelatorioConsolidado();
         var report = new FastReport.Report();
 
         report.Report.Load(reportPath);
-        report.Dictionary.RegisterBusinessObject(reportData.ToList(), "ReportDataSurce", 10, true);
+        report.Dictionary.RegisterBusinessObject(reportData.ToList(), "RelatorioConsolidadoPorAutor", 10, true);
         report.Prepare();
 
         var pdfExport = new PDFSimpleExport();
@@ -108,24 +109,8 @@ public class ReportController : ControllerBase
 
         ms.Seek(0, SeekOrigin.Begin);
 
-        var nomeArquivo = $"relatorio-livros_{_timeProvider.GetUtcNow():yyyy-MM-ddTHH-mm-ss}.pdf";
+        var nomeArquivo = $"relatorio-consolidado_{_timeProvider.GetUtcNow():yyyy-MM-ddTHH-mm-ss}.pdf";
 
         return File(ms, "application/odf", nomeArquivo, enableRangeProcessing);
     }
-
-    // [HttpPost]
-    // public ActionResult CriarRelatorioModelo()
-    // {
-    //     var path = AppDomain.CurrentDomain.BaseDirectory;
-    //     var reportPath = Path.Combine(path, "Reports", "Modelo.frx");
-
-    //     var data = GetItems();
-
-    //     var report = new FastReport.Report();
-
-    //     report.Dictionary.RegisterBusinessObject(data, "ReportDataSurce", 10, true);
-    //     report.Report.Save(reportPath);
-
-    //     return Ok(reportPath);
-    // }
 }

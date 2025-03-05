@@ -81,4 +81,9 @@ public interface IManutencaoLivroAppRepository
     /// <param name="livroId">Identificador do livro</param>
     /// <returns>Lista de <see cref="Assunto"/></returns>
     Task<IEnumerable<Assunto>> ObterAssuntosDoLivroAsync(int livroId);
+
+    /// <summary>
+    /// Obter dados de livros para relatório consolidado
+    /// </summary>
+    Task<IEnumerable<RelatorioConsolidadoPorAutorModel>> ObterDadosDeLivrosParaRelatorioConsolidado();
 }
