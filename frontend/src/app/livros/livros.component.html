@@ -248,6 +248,52 @@
           </li>
         </ul>
       </div>
+
+      <div class="mt-5">
+        <h4>Valores</h4>
+        <ul class="list-group">
+          @if(!selecionado.valores?.length)
+          {
+          <li class="list-group-item list-group-item-warning">
+            O livro não tem valor(es) ainda!
+          </li>
+          }@else{
+          @for(valorDoLivro of selecionado.valores; track valorDoLivro.codigo){
+          <li class="list-group-item d-flex justify-content-between">
+            {{ valorDoLivro.valor }} ({{ valorDoLivro.formaCompra }})
+            <button (click)="removerValorDaSelecao(valorDoLivro)" class="btn btn-sm btn-danger ">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </li>
+          }
+          }
+          <li *ngIf="incluindoValor" class="list-group-item">
+            <div class="d-flex align-items-justify">
+              <div class="input-group me-2">
+                <span class="input-group-text text-secondary" id="">R$</span>
+                <input [(ngModel)]="valorSelecionadoParaIncluir" type="number" class="form-control">
+              </div>
+              <select [(ngModel)]="valorFormaSelecionadoParaIncluir" class="form-select">
+                <option *ngFor="let obj of obterFormasCompraParaIncluir()" [ngValue]="obj">
+                  {{ obj }}
+                </option>
+              </select>
+              <button (click)="incluirValor()" class="btn btn-sm ms-2 btn-info">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+              <button (click)="incluindoValor=false" class="btn btn-sm ms-2 btn-outline-secondary">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          </li>
+          <li *ngIf="!incluindoValor && obterFormasCompraParaIncluir().length" class="list-group-item">
+            <button (click)="incluindoValor=true" class="btn btn-outline-info">
+              <i class="bi bi-plus-lg"></i> Incluir valor
+            </button>
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 

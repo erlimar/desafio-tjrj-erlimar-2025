@@ -1,5 +1,6 @@
 import { Assunto } from "./assunto.data";
 import { Autor } from "./autor.data";
+import { ValorLivro } from "./valor-livro.data";
 
 export interface Livro {
   codigo: number;
@@ -9,4 +10,5 @@ export interface Livro {
   anoPublicacao: number | null;
   assuntos: Assunto[] | null;
   autores: Autor[] | null;
+  valores: ValorLivro[] | null;
 }

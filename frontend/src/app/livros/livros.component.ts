@@ -7,6 +7,7 @@ import { Autor } from '../autor.data';
 import { Assunto } from '../assunto.data';
 import { AutoresService } from '../autores.service';
 import { AssuntosService } from '../assuntos.service';
+import { ValorLivro } from '../valor-livro.data';
 
 @Component({
   selector: 'app-livros',
@@ -25,12 +26,22 @@ export class LivrosComponent {
   autoresDisponiveis: Autor[] = [];
   autorSelecionadoParaIncluir: Autor | null = null;
   assuntosDisponiveis: Assunto[] = [];
+  formasCompraDisponiveis: string[] = [
+    "balcão",
+    "self-service",
+    "internet",
+    "evento",
+    "outros"
+  ]
   assuntoSelecionadoParaIncluir: Assunto | null = null;
+  valorSelecionadoParaIncluir: number | null = null;
+  valorFormaSelecionadoParaIncluir: string | null = null;
   acaoSelecionada: string | null = null;
   errosServidor: string[] = [];
   carregando: boolean = false;
   incluindoAutor: boolean = false;
   incluindoAssunto: boolean = false;
+  incluindoValor: boolean = false;
 
   constructor() {
     this.livrosService.obterTodosLivros().subscribe((livros: Livro[]) => {
@@ -60,6 +71,17 @@ export class LivrosComponent {
       (assunto: Assunto) => !jaSelecionados.filter(s => s.codigo === assunto.codigo).length);
   }
 
+  obterFormasCompraParaIncluir(): string[] {
+    if (!this.selecionado || !Array.isArray(this.formasCompraDisponiveis) || !this.formasCompraDisponiveis.length) {
+      return [];
+    }
+
+    const jaSelecionados = this.selecionado.valores || [];
+
+    return this.formasCompraDisponiveis.filter(
+      (formaCompra: string) => !jaSelecionados.filter(s => s.formaCompra === formaCompra).length);
+  }
+
   removerAutorDaSelecao(autor: Autor) {
     if (this.selecionado?.autores) {
       this.selecionado.autores = this.selecionado.autores.filter((a: Autor) => a.codigo !== autor.codigo);
@@ -67,9 +89,14 @@ export class LivrosComponent {
   }
 
   removerAssuntoDaSelecao(assunto: Assunto) {
-    console.log(assunto);
     if (this.selecionado?.assuntos) {
       this.selecionado.assuntos = this.selecionado.assuntos.filter((a: Assunto) => a.codigo !== assunto.codigo);
+    }
+  }
+
+  removerValorDaSelecao(valor: ValorLivro) {
+    if (this.selecionado?.valores) {
+      this.selecionado.valores = this.selecionado.valores.filter((v: ValorLivro) => v.formaCompra !== valor.formaCompra);
     }
   }
 
@@ -91,6 +118,24 @@ export class LivrosComponent {
     this.assuntoSelecionadoParaIncluir = null;
   }
 
+  incluirValor() {
+    // TODO: Conferir dados do formulário
+    if (this.valorSelecionadoParaIncluir && this.valorFormaSelecionadoParaIncluir) {
+      this.selecionado?.valores?.push({
+        codigo: 0,
+        formaCompra: this.valorFormaSelecionadoParaIncluir,
+        valor: this.valorSelecionadoParaIncluir
+      });
+    } else {
+      alert('Ops!')
+      return;
+    }
+
+    this.incluindoValor = false;
+    this.valorSelecionadoParaIncluir = null;
+    this.valorFormaSelecionadoParaIncluir = null;
+  }
+
   incluirNovoLivro() {
     this.selecionar({
       codigo: 0,
@@ -99,7 +144,8 @@ export class LivrosComponent {
       edicao: null,
       anoPublicacao: null,
       autores: [],
-      assuntos: []
+      assuntos: [],
+      valores: []
     }, 'cadastrar');
   }
 
@@ -116,7 +162,8 @@ export class LivrosComponent {
       // em cada seleção, pois a intenção é preenchê-los
       // dinamicamente logo em seguida
       autores: [],
-      assuntos: []
+      assuntos: [],
+      valores: []
     };
     this.acaoSelecionada = acao;
 
@@ -153,11 +200,14 @@ export class LivrosComponent {
     this.autorSelecionadoParaIncluir = null;
     this.assuntosDisponiveis = [];
     this.assuntoSelecionadoParaIncluir = null;
+    this.valorSelecionadoParaIncluir = null;
+    this.valorFormaSelecionadoParaIncluir = null;
     this.acaoSelecionada = null;
     this.errosServidor = [];
     this.carregando = false;
     this.incluindoAssunto = false;
     this.incluindoAutor = false;
+    this.incluindoValor = false;
   }
 
   confirmaExclusaoSelecionado() {
@@ -169,6 +219,7 @@ export class LivrosComponent {
         this.carregando = false;
         this.incluindoAssunto = false;
         this.incluindoAutor = false;
+        this.incluindoValor = false;
         this.selecionado = null;
         this.acaoSelecionada = null;
       })
@@ -176,6 +227,7 @@ export class LivrosComponent {
       this.carregando = false;
       this.incluindoAssunto = false;
       this.incluindoAutor = false;
+      this.incluindoValor = false;
     }
   }
 
@@ -191,11 +243,14 @@ export class LivrosComponent {
           this.carregando = false;
           this.incluindoAssunto = false;
           this.incluindoAutor = false;
+          this.incluindoValor = false;
           this.selecionado = null;
           this.autoresDisponiveis = [];
           this.autorSelecionadoParaIncluir = null;
           this.assuntosDisponiveis = [];
           this.assuntoSelecionadoParaIncluir = null;
+          this.valorSelecionadoParaIncluir = null;
+          this.valorFormaSelecionadoParaIncluir = null;
           this.acaoSelecionada = null;
         },
         error: (failure: any) => {
@@ -212,6 +267,7 @@ export class LivrosComponent {
           this.carregando = false;
           this.incluindoAssunto = false;
           this.incluindoAutor = false;
+          this.incluindoValor = false;
         }
       });
 
@@ -224,11 +280,14 @@ export class LivrosComponent {
           this.carregando = false;
           this.incluindoAssunto = false;
           this.incluindoAutor = false;
+          this.incluindoValor = false;
           this.selecionado = null;
           this.autoresDisponiveis = [];
           this.autorSelecionadoParaIncluir = null;
           this.assuntosDisponiveis = [];
           this.assuntoSelecionadoParaIncluir = null;
+          this.valorSelecionadoParaIncluir = null;
+          this.valorFormaSelecionadoParaIncluir = null;
           this.acaoSelecionada = null;
         },
         error: (failure: any) => {
@@ -245,12 +304,14 @@ export class LivrosComponent {
           this.carregando = false;
           this.incluindoAssunto = false;
           this.incluindoAutor = false;
+          this.incluindoValor = false;
         }
       });
     } else {
       this.carregando = false;
       this.incluindoAssunto = false;
       this.incluindoAutor = false;
+      this.incluindoValor = false;
     }
   }
 }
